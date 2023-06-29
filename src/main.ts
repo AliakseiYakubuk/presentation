@@ -22,7 +22,3 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-
-const lala: number = 5
-
-console.log(lala)
