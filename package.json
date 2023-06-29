@@ -1,9 +1,27 @@
 {
   "name": "cv",
-  "version": "1.0.0",
-  "description": "cv",
-  "main": "index.js",
-  "repository": "git@github.com:AliakseiYakubuk/cv.git",
-  "author": "Aliaksei Yakubuk <aliaksei.yakubuk@gmail.com>",
-  "license": "MIT"
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext .ts --fix"
+  },
+  "engines": {
+    "yarn": ">=1.22.4",
+    "node": ">=16.18"
+  },
+  "devDependencies": {
+    "@types/node": "20.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^35.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "5.0.2",
+    "vite": "4.3.9",
+    "vite-plugin-html": "3.2.0"
+  }
 }
