@@ -1,0 +1,21 @@
+FROM node:18.16.1-alpine3.18 AS build
+
+WORKDIR /app
+
+COPY package.json yarn.lock tsconfig.json vite.config.ts ./
+
+COPY src ./src
+
+COPY public ./public
+
+RUN yarn install --no-progress --frozen-lockfile
+
+ENV NODE_ENV production
+
+RUN yarn build && rm -rf node_modules
+
+FROM nginx:1.25-alpine
+
+WORKDIR /static
+
+COPY --from=build /app/build ./
