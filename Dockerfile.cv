@@ -19,3 +19,5 @@ FROM nginx:1.25-alpine
 WORKDIR /static
 
 COPY --from=build /app/build ./
+
+COPY nginx.conf /etc/nginx/nginx.conf
