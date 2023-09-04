@@ -9,9 +9,8 @@ export default defineConfig({
   },
   root: "src",
   resolve: {
-    alias: { 
+    alias: {
       "src": path.resolve(process.cwd(), "src"),
-      "public": path.resolve(process.cwd(), "public"),
     }
   },
   build: {
@@ -24,7 +23,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    createHtmlPlugin({   
+    createHtmlPlugin({
       minify: true,
     })
   ]
