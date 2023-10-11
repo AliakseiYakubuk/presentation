@@ -3,7 +3,10 @@
     "browser": true,
     "es2021": true
   },
-  "extends": "standard-with-typescript",
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base"
+  ],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -16,9 +19,15 @@
     "vite.config.ts"
   ],
   "rules": {
+    "@typescript-eslint/semi": "error",
     "no-console": "warn",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/strict-boolean-expressions": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "no-restricted-exports": "off",
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off"
   }
 }
