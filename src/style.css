@@ -20,20 +20,56 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  border: 2px solid red;
+  position: relative;
+  color: white;
 }
 
 
-/* .app {
-  border: 2px solid purple;
+.app {
+  width: 500vw;
+  height: 300vh;
+  position: absolute;
+  top: 0;
+  left: -200vw;
+  background: black;
+  display: flex;
+}
+
+.container {
   width: 100%;
   height: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.view {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-} */
+}
+
+.home {
+  top: 0;
+  left: 200vw;
+}
+
+.contacts {
+  top: 200vh;
+  left: 200vw;
+}
+
+.skills {
+  top: 0;
+  left: 400vw;
+}
+
+.about {
+  top: 0;
+  left: 0;
+}
 
 .canvas {
   border: 2px solid green

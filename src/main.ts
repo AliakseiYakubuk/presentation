@@ -1,7 +1,7 @@
 import './style.css';
-import { Canvas } from './components/Canvas';
+// import { Canvas } from './components/Canvas';
 
-window.addEventListener('load', Canvas.init);
+// window.addEventListener('load', Canvas.init);
 
 // const randomNumberInRange = (min: number, max: number) => min + (max - min) * Math.random();
 
