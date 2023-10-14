@@ -25,14 +25,35 @@ body {
 }
 
 
-.app {
-  width: 500vw;
-  height: 300vh;
+.grid {
+  width: 200vw;
+  height: 400vh;
   position: absolute;
   top: 0;
-  left: -200vw;
+  left: 0;
   background: black;
   display: flex;
+  transition: all 500ms ease-in-out;
+}
+
+.grid_home {
+  top: 0;
+  left: 0;
+}
+
+.grid_contacts {
+  top: -100vh;
+  left: -100vw;
+}
+
+.grid_skills {
+  top: -200vh;
+  left: 0;
+}
+
+.grid_about {
+  top: -300vh;
+  left: -100vw;
 }
 
 .container {
@@ -49,26 +70,27 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid red
 }
 
-.home {
-  top: 0;
-  left: 200vw;
-}
-
-.contacts {
-  top: 200vh;
-  left: 200vw;
-}
-
-.skills {
-  top: 0;
-  left: 400vw;
-}
-
-.about {
+.view_home {
   top: 0;
   left: 0;
+}
+
+.view_contacts {
+  top: 100vh;
+  left: 100vw;
+}
+
+.view_skills {
+  top: 200vh;
+  left: 0;
+}
+
+.view_about {
+  top: 300vh;
+  left: 100vw;
 }
 
 .canvas {

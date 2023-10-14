@@ -1,4 +1,9 @@
 import './style.css';
+import { Navigation } from './components/Navigation';
+
+const navigation = Navigation.init();
+
+window.addEventListener('wheel', (event: WheelEvent) => navigation.handleWheelSpin(event));
 // import { Canvas } from './components/Canvas';
 
 // window.addEventListener('load', Canvas.init);
