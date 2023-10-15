@@ -1,9 +1,12 @@
 import './style.css';
 import { Navigation } from './components/Navigation';
+import { router } from './components/Router';
 
-const navigation = Navigation.init();
+const navigation = new Navigation();
 
-window.addEventListener('wheel', (event: WheelEvent) => navigation.handleWheelSpin(event));
+router.listenLocationUpdates();
+router.listenPopStateUpdates();
+navigation.listenWheelUpdates();
 // import { Canvas } from './components/Canvas';
 
 // window.addEventListener('load', Canvas.init);

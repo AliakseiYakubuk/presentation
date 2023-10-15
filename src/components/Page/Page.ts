@@ -1,12 +1,17 @@
-class Page {
-  private htmlClass: string;
+export type PageOptions = {
+  top: string;
+  left: string;
+};
 
-  constructor(htmlClass: string) {
-    this.htmlClass = htmlClass;
+class Page {
+  private positioning: Pick<PageOptions, 'left' | 'top'>;
+
+  constructor({ top, left }: PageOptions) {
+    this.positioning = { top, left };
   }
 
-  public getClass() {
-    return this.htmlClass;
+  public get position() {
+    return this.positioning;
   }
 }
 

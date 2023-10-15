@@ -33,7 +33,9 @@ body {
   left: 0;
   background: black;
   display: flex;
-  transition: all 500ms ease-in-out;
+  transition-property: top, left;
+  transition-duration: 500ms;
+  transition-timing-function: ease-in-out;
 }
 
 .grid_home {
