@@ -1,16 +1,16 @@
 import './style.css';
 import { Navigation } from './components/Navigation';
+import { Canvas } from './components/Canvas';
 import { router } from './components/Router';
 
 const navigation = new Navigation();
+const logo = await Canvas.init('logo');
 
 router.listenLocationUpdates();
 router.listenPopStateUpdates();
 navigation.listenWheelUpdates();
-// import { Canvas } from './components/Canvas';
 
-// window.addEventListener('load', Canvas.init);
-
+logo.print('Aliaksei Yakubuk');
 // const randomNumberInRange = (min: number, max: number) => min + (max - min) * Math.random();
 
 // const waitFor = async (ms: number) => {

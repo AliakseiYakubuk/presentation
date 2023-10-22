@@ -24,6 +24,9 @@ body {
   color: white;
 }
 
+#logo {
+  border: 2px solid red
+}
 
 .grid {
   width: 200vw;
@@ -36,26 +39,6 @@ body {
   transition-property: top, left;
   transition-duration: 500ms;
   transition-timing-function: ease-in-out;
-}
-
-.grid_home {
-  top: 0;
-  left: 0;
-}
-
-.grid_contacts {
-  top: -100vh;
-  left: -100vw;
-}
-
-.grid_skills {
-  top: -200vh;
-  left: 0;
-}
-
-.grid_about {
-  top: -300vh;
-  left: -100vw;
 }
 
 .container {
