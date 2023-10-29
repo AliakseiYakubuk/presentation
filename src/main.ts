@@ -2,6 +2,7 @@ import './style.css';
 import { Navigation } from './components/Navigation';
 import { Canvas } from './components/Canvas';
 import { router } from './components/Router';
+import { Point } from './components/Point';
 
 const navigation = new Navigation();
 const logo = await Canvas.init('logo');
@@ -10,7 +11,11 @@ router.listenLocationUpdates();
 router.listenPopStateUpdates();
 navigation.listenWheelUpdates();
 
-logo.print('Aliaksei Yakubuk');
+logo.printLine('Aliaksei Yakubuk', new Point(0, 50), { fontSize: 20, color: '#FFF' });
+logo.printLine('Aliaksei Yakubuk', new Point(0, 270), { fontSize: 20, color: '#FFF' });
+logo.printLine('Aliaksei Yakubuk', new Point(0, 90), { fontSize: 20 });
+logo.printLine('Aliaksei Yakubuk', new Point(0, 110), { fontSize: 20 });
+logo.printLine('Aliaksei Yakubuk', new Point(0, 130), { fontSize: 20 });
 // const randomNumberInRange = (min: number, max: number) => min + (max - min) * Math.random();
 
 // const waitFor = async (ms: number) => {

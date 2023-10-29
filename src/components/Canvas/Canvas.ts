@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 /* eslint-disable no-await-in-loop */
+
+import { Point } from '../Point';
+import { Rectangle } from '../Rectangle';
+
+type PrintOptions = {
+  fontSize?: number,
+  fontFamily?: string,
+  align?: 'center',
+  color?: string,
+  background?: string,
+};
 class Canvas {
   static async init(id: string) {
     return new Promise<Canvas>((resolve) => {
@@ -47,6 +58,55 @@ class Canvas {
     });
   }
 
+  private getFontFamily(options?: PrintOptions) {
+    return options?.fontFamily || 'arial';
+  }
+
+  private getFontSize(options?: PrintOptions) {
+    return options?.fontSize || 10;
+  }
+
+  private getTextAlign(options?: PrintOptions) {
+    return options?.align || 'center';
+  }
+
+  private getTextColor(options?: PrintOptions) {
+    return options?.color || '#000';
+  }
+
+  private getBackground(options?: PrintOptions) {
+    return options?.background || 'rgba(255, 255, 255, 0)';
+  }
+
+  private getFont(options?: PrintOptions) {
+    return `${this.getFontSize(options)}px ${this.getFontFamily(options)}`;
+  }
+
+  private getRectangleForText(textPosition: Point, options?: PrintOptions) {
+    const halfHeight = this.getFontSize(options) / 2;
+    const topLeft = new Point(textPosition.x, textPosition.y - halfHeight);
+    const bottomRight = new Point(this.element.width, textPosition.y + halfHeight);
+    return new Rectangle(topLeft, bottomRight);
+  }
+
+  private drawRect(rectangle: Rectangle, options?: PrintOptions) {
+    this.context.fillStyle = this.getBackground(options);
+    this.context.fillRect(
+      rectangle.topLeft.x,
+      rectangle.topLeft.y,
+      rectangle.width,
+      rectangle.height,
+    );
+  }
+
+  private drawText(input: string, rectangle: Rectangle, options?: PrintOptions) {
+    this.context.textAlign = this.getTextAlign(options);
+    this.context.textBaseline = 'middle';
+    this.context.fillStyle = this.getTextColor(options);
+    this.context.font = this.getFont(options);
+    this.context.fillText(input, rectangle.width / 2, rectangle.topLeft.y + rectangle.height / 2);
+  }
+
   constructor(htmlCanvas: HTMLCanvasElement | null) {
     const context = this.getContext(htmlCanvas);
 
@@ -54,18 +114,26 @@ class Canvas {
     this.checkContextExists(context);
     this.element = htmlCanvas as HTMLCanvasElement;
     this.context = context as CanvasRenderingContext2D;
-    // this.adjustSize();
+    console.log(this.context);
   }
 
-  public print = async (input: string) => {
+  public printLine = (input: string, position: Point, options?: PrintOptions) => {
+    const rectangle = this.getRectangleForText(position, options);
+    console.log(rectangle);
+    this.drawRect(rectangle, options);
+    this.drawText(input, rectangle, options);
+  };
+
+  public print2 = async (input: string, options?: PrintOptions) => {
     let acc = '';
     let index = 0;
     // this.context.fillStyle = '#fff';
+    // this.context.font = this.getFont(options);
+    // this.context.textAlign = align;
+    // this.context.textBaseline = 'middle';
     // this.context.fillRect(0, 0, this.element.width, 100);
-    this.context.font = '50px serif';
-    this.context.textAlign = 'center';
-    this.context.fillStyle = '#FFF';
-    this.context.fillText(input, this.element.width / 2, 50);
+    // this.context.fillStyle = color;
+    // this.context.fillText(input, this.element.width / 2, 50);
     // this.context.clearRect(0, 0, this.element.width, 100);
 
     for (index; index < input.length; index += 1) {
