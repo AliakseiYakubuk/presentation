@@ -10,12 +10,11 @@ type PrintOptions = {
   align?: CanvasTextAlign,
   color?: string,
   background?: string,
-};
-
-type ProgressivePrintOptions = PrintOptions & {
   minDelay?: number,
   maxDelay?: number,
+  animate?: boolean
 };
+
 class Canvas {
   static async init(id: string) {
     return new Promise<Canvas>((resolve) => {
@@ -72,11 +71,7 @@ class Canvas {
   }
 
   private getTextAlign(options?: PrintOptions) {
-    const align = options?.align || 'center';
-    if (align !== 'center') {
-      throw new Error('Only text align by center is supported');
-    }
-    return align;
+    return options?.align || 'center';
   }
 
   private getTextColor(options?: PrintOptions) {
@@ -84,18 +79,18 @@ class Canvas {
   }
 
   private getBackground(options?: PrintOptions) {
-    return options?.background || 'rgba(255, 255, 255, 0)';
+    return options?.background || '#FFF';
   }
 
   private getFont(options?: PrintOptions) {
     return `${this.getFontSize(options)}px ${this.getFontFamily(options)}`;
   }
 
-  private getMinDelay(options?: ProgressivePrintOptions) {
+  private getMinDelay(options?: PrintOptions) {
     return options?.minDelay || 0;
   }
 
-  private getMaxDelay(options?: ProgressivePrintOptions) {
+  private getMaxDelay(options?: PrintOptions) {
     return options?.maxDelay || 0;
   }
 
@@ -107,18 +102,14 @@ class Canvas {
   }
 
   private measureText(input: string, options?: PrintOptions) {
-    const prevTextAlign = this.context.textAlign;
-    const prevFont = this.context.font;
+    const context = document.createElement('canvas').getContext('2d')!;
 
-    this.context.textAlign = 'left';
-    this.context.font = this.getFont(options);
+    context.textAlign = 'left';
+    context.font = this.getFont(options);
 
     const width = input
       .split('')
-      .reduce((total, char) => (total + this.context.measureText(char).width), 0);
-
-    this.context.textAlign = prevTextAlign;
-    this.context.font = prevFont;
+      .reduce((total, char) => (total + context.measureText(char).width), 0);
 
     return { width };
   }
@@ -133,21 +124,45 @@ class Canvas {
     );
   }
 
-  private drawText(input: string, rectangle: Rectangle, options?: PrintOptions) {
+  private drawCursor(posx: Point, options?: PrintOptions) {
+    const height = this.getFontSize(options);
+    const topLeft = new Point(posx.x, posx.y - height / 2);
+    const bottomRight = new Point(posx.x + height / 2, posx.y + height / 2);
+    const rectangle = new Rectangle(topLeft, bottomRight);
+
+    this.drawRect(rectangle, { ...options, background: this.getTextColor(options) });
+  }
+
+  private removeCursor(posx: Point, options?: PrintOptions) {
+    // const prevGlobalCompositeOperation = this.context.globalCompositeOperation;
+    // this.context.globalCompositeOperation = 'destination-over';
+    // debugger;
+    this.drawCursor(posx, { ...options, color: this.getBackground(options) });
+    // this.context.globalCompositeOperation = prevGlobalCompositeOperation;
+  }
+
+  private drawText(input: string, origin: Point, options?: PrintOptions) {
     this.context.textAlign = this.getTextAlign(options);
     this.context.textBaseline = 'middle';
     this.context.fillStyle = this.getTextColor(options);
     this.context.font = this.getFont(options);
-    this.context.fillText(input, rectangle.width / 2, rectangle.topLeft.y + rectangle.height / 2);
+    this.context.fillText(input, origin.x, origin.y);
+  }
+
+  private drawTextLine(input: string, rectangle: Rectangle, options?: PrintOptions) {
+    const positionX = rectangle.width / 2;
+    const positionY = rectangle.topLeft.y + rectangle.height / 2;
+
+    this.drawText(input, new Point(positionX, positionY), options);
   }
 
   // eslint-disable-next-line max-len
-  private async drawTextProgressively(input: string, rectangle: Rectangle, options?: ProgressivePrintOptions) {
+  private async drawTextLineProgressively(input: string, rectangle: Rectangle, options?: PrintOptions) {
+    const minDelay = this.getMinDelay(options);
+    const maxDelay = this.getMaxDelay(options);
     const metadata = this.measureText(input, options);
     const positionX = (rectangle.width / 2) - (metadata.width / 2);
     const positionY = rectangle.topLeft.y + rectangle.height / 2;
-    const minDelay = this.getMinDelay(options);
-    const maxDelay = this.getMaxDelay(options);
 
     this.context.textAlign = 'left';
     this.context.textBaseline = 'middle';
@@ -159,20 +174,19 @@ class Canvas {
 
     for (index; index < input.length; index += 1) {
       const char = input[index];
+
       requestAnimationFrame(() => {
         const { width } = this.measureText(char, options);
-        this.context.fillText(char, position, positionY);
+
+        this.drawText(char, new Point(position, positionY), { ...options, align: 'left' });
+        this.drawCursor(new Point(position + width, positionY), options);
+
         position += width;
       });
       await this.waitFor(this.randomNumberInRange(minDelay, maxDelay));
+
+      this.removeCursor(new Point(position, positionY), options);
     }
-
-    // input.split('').reduce((position, char) => {
-    //   const { width } = this.measureText(char, options);
-
-    //   this.context.fillText(char, position, positionY);
-    //   return position + width;
-    // }, positionX);
   }
 
   constructor(htmlCanvas: HTMLCanvasElement | null) {
@@ -182,47 +196,18 @@ class Canvas {
     this.checkContextExists(context);
     this.element = htmlCanvas as HTMLCanvasElement;
     this.context = context as CanvasRenderingContext2D;
-    console.log(this.context);
   }
 
-  public print(input: string, position: Point, options?: PrintOptions) {
+  public async print(input: string, position: Point, options?: PrintOptions) {
     const rectangle = this.getRectangleForText(position, options);
-    this.drawRect(rectangle, options);
-    this.drawText(input, rectangle, options);
-  }
+    // this.drawRect(rectangle, options);
 
-  // eslint-disable-next-line max-len
-  public async printProgressively(input: string, position: Point, options?: ProgressivePrintOptions) {
-    const rectangle = this.getRectangleForText(position, options);
-    this.drawRect(rectangle, options);
-    await this.drawTextProgressively(input, rectangle, options);
-  }
-
-  public print2 = async (input: string, options?: PrintOptions) => {
-    let acc = '';
-    let index = 0;
-    // this.context.fillStyle = '#fff';
-    // this.context.font = this.getFont(options);
-    // this.context.textAlign = align;
-    // this.context.textBaseline = 'middle';
-    // this.context.fillRect(0, 0, this.element.width, 100);
-    // this.context.fillStyle = color;
-    // this.context.fillText(input, this.element.width / 2, 50);
-    // this.context.clearRect(0, 0, this.element.width, 100);
-
-    for (index; index < input.length; index += 1) {
-      const char = input[index];
-      acc = `${acc}${char}`;
-      requestAnimationFrame(() => {
-        // this.context.clearRect(0, 0, this.element.width, 100);
-        // this.context.fillStyle = '#fff';
-        // this.context.fillRect(0, 0, this.element.width, 100);
-        // this.context.fillStyle = '#000';
-        // this.context.fillText(acc, this.element.width, 100);
-      });
-      await this.waitFor(this.randomNumberInRange(50, 50));
+    if (options?.animate) {
+      await this.drawTextLineProgressively(input, rectangle, options);
+    } else {
+      this.drawTextLine(input, rectangle, options);
     }
-  };
+  }
 }
 
 export default Canvas;
