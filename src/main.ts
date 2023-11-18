@@ -11,11 +11,23 @@ router.listenLocationUpdates();
 router.listenPopStateUpdates();
 navigation.listenWheelUpdates();
 
-logo.printLine('Aliaksei Yakubuk', new Point(0, 50), { fontSize: 20, color: '#FFF' });
-logo.printLine('Aliaksei Yakubuk', new Point(0, 270), { fontSize: 20, color: '#FFF' });
-logo.printLine('Aliaksei Yakubuk', new Point(0, 90), { fontSize: 20 });
-logo.printLine('Aliaksei Yakubuk', new Point(0, 110), { fontSize: 20 });
-logo.printLine('Aliaksei Yakubuk', new Point(0, 130), { fontSize: 20 });
+// logo.print('Aliaksei Yakubuk', new Point(0, 50), { fontSize: 20, color: '#FFF' });
+await logo.printProgressively('Aliaksei Yakubuk', new Point(0, 90), {
+  fontSize: 35,
+  color: '#fff',
+  maxDelay: 250,
+  minDelay: 100,
+});
+
+await logo.printProgressively('Software Engineer', new Point(0, 150), {
+  fontSize: 20,
+  color: '#fff',
+  maxDelay: 250,
+  minDelay: 100,
+});
+// logo.print('Aliaksei Yakubuk', new Point(0, 270), { fontSize: 20, color: '#FFF' });
+// logo.print('Aliaksei Yakubuk', new Point(0, 110), { fontSize: 20 });
+// logo.print('Aliaksei Yakubuk', new Point(0, 130), { fontSize: 20 });
 // const randomNumberInRange = (min: number, max: number) => min + (max - min) * Math.random();
 
 // const waitFor = async (ms: number) => {
