@@ -20,15 +20,22 @@ type SpeedPrintOptions = {
   max?: number
 };
 
+type PaddingPrintOptions = {
+  right?: number,
+  left?: number,
+};
+
 type PrintOptions = {
   fontSize?: number,
+  lineHeight?: number,
   fontFamily?: string,
-  align?: CanvasTextAlign,
+  align?: 'left' | 'center' | 'right',
   color?: string,
   background?: string,
   animate?: boolean,
   speed?: SpeedPrintOptions,
-  cursor?: CursorPrintOptions
+  cursor?: CursorPrintOptions,
+  padding?: PaddingPrintOptions
 };
 
 class Canvas {
@@ -86,6 +93,11 @@ class Canvas {
     return options?.fontSize || 10;
   }
 
+  private getLineHeight(options?: PrintOptions) {
+    const fontSize = this.getFontSize(options);
+    return options?.lineHeight || (fontSize * 1.5);
+  }
+
   private getTextAlign(options?: PrintOptions) {
     return options?.align || 'center';
   }
@@ -100,6 +112,14 @@ class Canvas {
 
   private getFont(options?: PrintOptions) {
     return `${this.getFontSize(options)}px ${this.getFontFamily(options)}`;
+  }
+
+  private getPadding(options?: PrintOptions) {
+    const padding = options?.padding;
+    return {
+      right: padding?.right || 0,
+      left: padding?.left || 0,
+    };
   }
 
   private getSpeed(options?: PrintOptions) {
@@ -125,9 +145,19 @@ class Canvas {
   }
 
   private getRectangleForText(textPosition: Point, options?: PrintOptions) {
-    const halfHeight = this.getFontSize(options) / 2;
-    const topLeft = new Point(textPosition.x, textPosition.y - halfHeight);
-    const bottomRight = new Point(this.element.width, textPosition.y + halfHeight);
+    const halfHeight = this.getLineHeight(options) / 2;
+    const top = textPosition.y - halfHeight;
+    const right = textPosition.x + this.context.canvas.width;
+    const bottom = textPosition.y + halfHeight;
+    const topLeft = new Point(textPosition.x, top);
+    const bottomRight = new Point(right, bottom);
+    return new Rectangle(topLeft, bottomRight);
+  }
+
+  private getRectangleForCursor(posx: Point, options?: PrintOptions) {
+    const height = this.getFontSize(options);
+    const topLeft = new Point(posx.x, posx.y - height / 2);
+    const bottomRight = new Point(posx.x + height / 2.5, posx.y + height / 2.5);
     return new Rectangle(topLeft, bottomRight);
   }
 
@@ -145,6 +175,23 @@ class Canvas {
     return { ...metadata, width };
   }
 
+  // eslint-disable-next-line max-len
+  private getPrintingStartPoint(metadata: ReturnType<typeof this.measureText>, rectangle: Rectangle, options?: PrintOptions) {
+    const align = this.getTextAlign(options);
+    const padding = this.getPadding(options);
+    const positionY = rectangle.topLeft.y + rectangle.height / 2;
+
+    if (align === 'left') {
+      return new Point(padding.left + rectangle.topLeft.x, positionY);
+    }
+
+    if (align === 'right') {
+      return new Point(rectangle.width - metadata.width - padding.right, positionY);
+    }
+
+    return new Point((rectangle.width / 2) - (metadata.width / 2), positionY);
+  }
+
   private drawRect(rectangle: Rectangle, options?: PrintOptions) {
     this.context.fillStyle = this.getBackground(options);
     this.context.fillRect(
@@ -156,11 +203,7 @@ class Canvas {
   }
 
   private drawCursor(posx: Point, options?: PrintOptions) {
-    const height = this.getFontSize(options);
-    const topLeft = new Point(posx.x, posx.y - height / 2);
-    const bottomRight = new Point(posx.x + height / 2.5, posx.y + height / 2.5);
-    const rectangle = new Rectangle(topLeft, bottomRight);
-
+    const rectangle = this.getRectangleForCursor(posx, options);
     this.drawRect(rectangle, { ...options, background: this.getTextColor(options) });
   }
 
@@ -217,8 +260,9 @@ class Canvas {
     const speed = this.getSpeed(options);
     const cursor = this.getCursor(options);
     const metadata = this.measureText(input, options);
-    const positionX = (rectangle.width / 2) - (metadata.width / 2);
-    const positionY = rectangle.topLeft.y + rectangle.height / 2;
+    const startPoint = this.getPrintingStartPoint(metadata, rectangle, options);
+    const positionX = startPoint.x;
+    const positionY = startPoint.y;
     const textOptions = { ...options, align: 'left' } as PrintOptions;
 
     let index = 0;
@@ -255,7 +299,7 @@ class Canvas {
     this.context = context as CanvasRenderingContext2D;
   }
 
-  public async print(input: string, position: Point, options?: PrintOptions) {
+  public async printLine(input: string, position: Point, options?: PrintOptions) {
     const rectangle = this.getRectangleForText(position, options);
 
     if (options?.animate) {
@@ -264,6 +308,8 @@ class Canvas {
       this.drawTextLine(input, rectangle, options);
     }
   }
+
+  // public async print(input: string, position: Point, options?: PrintOptions)
 
   public getPixelData(point: Point) {
     const imageData = this.context.getImageData(point.x, point.y, this.context.canvas.width, 1);
