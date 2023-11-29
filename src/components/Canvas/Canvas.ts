@@ -309,29 +309,34 @@ class Canvas {
     }
   }
 
-  // public async print(input: string, position: Point, options?: PrintOptions)
+  public async print(input: string, position: Point, options?: PrintOptions) {
+    const lineHeight = this.getLineHeight(options);
+    const rectangle = this.getRectangleForText(position, options);
+    const padding = this.getPadding(options);
+    const lineWidth = rectangle.width - padding.left - padding.right;
+    const words = input.split(' ');
+    const lines = words.reduce((acc, word) => {
+      const index = Math.max(acc.length - 1, 0);
+      const line = acc[index];
+      const extendedLine = (line.length > 0) ? `${line} ${word}` : word;
+      const metadata = this.measureText(extendedLine, options);
 
-  public getPixelData(point: Point) {
-    const imageData = this.context.getImageData(point.x, point.y, this.context.canvas.width, 1);
-    //     const arr = new Uint8ClampedArray(4);
-    //     arr[0] = 20;
-    // = arr;    arr[1] = 40;
-    //     arr[2] = 60;
-    //     console.log(data);
-    //     const imageData = new ImageData(4, 1);
-    //     imageData.data
-
-    for (let index = 0; index < imageData.data.length; index += 1) {
-      // if (data[index] !== 0) {
-      console.log(imageData.data[index]);
-      // }
-
-      if (index > 1000) {
-        imageData.data[index] = 255;
+      if (metadata.width <= lineWidth) {
+        acc[index] = extendedLine;
+      } else {
+        acc.push(word);
       }
-      console.log(imageData);
-      this.context.putImageData(imageData, point.x, point.y);
-    }
+
+      return acc;
+    }, [''] as string[]);
+
+    await lines.reduce(
+      (promise, line) => promise.then(async (point) => {
+        await this.printLine(line, point, options);
+        return new Point(point.x, point.y + lineHeight);
+      }),
+      Promise.resolve(position),
+    );
   }
 }
 
