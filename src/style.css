@@ -4,16 +4,21 @@
         url('./assets/ubuntu-bold.ttf') format('truetype')
 }
 
+
 :root {
   font-family: ubuntu, system-ui, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 16px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  background-color: black;
+
+  /* --spacing: 8px; */
 }
 
 * {
@@ -21,129 +26,94 @@
 }
 
 body {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   padding: 0;
   margin: 0;
-  overflow: hidden;
-  position: relative;
-  color: white;
+  
+  background-color: black;
 }
 
-
-#logo {
-  border: 2px solid red
-}
-
-.grid {
-  width: 200vw;
-  height: 400vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: black;
-  display: flex;
-  transition-property: top, left;
-  transition-duration: 500ms;
-  transition-timing-function: ease-in-out;
-}
 
 .container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
+  /* display: flex; */
+  /* flex-direction: column; */
 }
 
 .view {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  /* border: 2px solid red; */
+  overflow: hidden;
+}
+
+.home {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid red
+  flex-direction: column;
 }
 
-.view_home {
-  top: 0;
-  /* bottom: 100vh; */
-  left: 0;
-  /* right: 100vw; */
+#logo {
+  /* border: 2px solid red */
+  /* max-width: 500px;
+  margin: 0 auto; */
 }
 
-.view_contacts {
-  top: 100vh;
-  left: 100vw;
+.contacts {
+  padding-top: 32px;
+  padding-bottom: 16px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
 }
 
-.view_skills {
-  top: 200vh;
+.contacts_visible {
+  opacity: 1;
+  animation: appear 500ms ease-in-out;
+  pointer-events: all;
+  transform: translateY(0);
+}
+ 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-  left: 0;
-  overflow-y: auto;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.view_about {
-  top: 300vh;
-  left: 100vw;
-}
-
-.skill_container {
-  border: 2px solid rgb(85, 123, 23);
-  /* display: block; */
-  height: 5000px;
-  /* min-height: 100vh; */
+.contact {
   
-  /* padding: 64px 0; */
-  width: 100%;
-  max-width: 960px;
+  /* visibility: hidden; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 1.25em;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  transition: background-color 150ms;
 }
 
-.skill_grid {
-  margin: 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: 16px 190px auto 16px;
-  margin: 0 auto;
-  margin-bottom: 32px;
-  grid-template-areas: 
-            "term company company"
-            ". position position"
-            ". description description";
+.contact:hover {
+  background-color: rgba(255,255,255,0.1);
+}
 
-  .term {
-    font-size: 1.2em;
-    grid-area: term;
-    display: flex;
-    align-items: center;
-  }
-  
-  .company {
-    grid-area: company;
-    display: flex;
-    align-items: center;
-  }
+.contact:focus {
+  outline: none;
+  background-color: rgba(255,255,255,0.1);
+}
 
-  .position {
-    grid-area: position;
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-  }
-
-  .description {
-    grid-area: description;
-  }
-
-  .company_link {
-    font-size: 1.5em;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .job_overview {
-    margin-bottom: 0;
-  }
+.contact_icon {
+  margin-right: 12px;
 }

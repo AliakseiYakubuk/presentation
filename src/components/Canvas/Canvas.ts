@@ -25,7 +25,7 @@ type PaddingPrintOptions = {
   left?: number,
 };
 
-type PrintOptions = {
+export type PrintOptions = {
   fontSize?: number,
   lineHeight?: number,
   fontFamily?: string,
@@ -48,8 +48,6 @@ class Canvas {
     });
   }
 
-  private readonly element: HTMLCanvasElement;
-
   private readonly context: CanvasRenderingContext2D;
 
   private checkCanvasExists(htmlCanvas: HTMLCanvasElement | null) {
@@ -69,11 +67,6 @@ class Canvas {
       ? htmlCanvas.getContext('2d') || null
       : null;
   }
-
-  // private adjustSize() {
-  //   this.element.width = document.body.clientWidth;
-  //   this.element.height = document.body.clientHeight;
-  // }
 
   private randomNumberInRange(min: number, max: number) {
     return min + (max - min) * Math.random();
@@ -295,8 +288,15 @@ class Canvas {
 
     this.checkCanvasExists(htmlCanvas);
     this.checkContextExists(context);
-    this.element = htmlCanvas as HTMLCanvasElement;
     this.context = context as CanvasRenderingContext2D;
+  }
+
+  public setWidth(width: number) {
+    this.context.canvas.width = width;
+  }
+
+  public setHeight(height: number) {
+    this.context.canvas.height = height;
   }
 
   public async printLine(input: string, position: Point, options?: PrintOptions) {
