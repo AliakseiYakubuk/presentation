@@ -28,6 +28,7 @@
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "no-restricted-exports": "off",
     "import/prefer-default-export": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-restricted-syntax": ["off", "ForOfStatement"]
   }
 }

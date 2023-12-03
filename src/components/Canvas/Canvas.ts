@@ -28,6 +28,7 @@ type PaddingPrintOptions = {
 export type PrintOptions = {
   fontSize?: number,
   lineHeight?: number,
+  itemSpacing?: number,
   fontFamily?: string,
   align?: 'left' | 'center' | 'right',
   color?: string,
@@ -49,6 +50,8 @@ class Canvas {
   }
 
   private readonly context: CanvasRenderingContext2D;
+
+  private readonly newLineChar: string = '\\\\n';
 
   private checkCanvasExists(htmlCanvas: HTMLCanvasElement | null) {
     if (!htmlCanvas) {
@@ -105,6 +108,11 @@ class Canvas {
 
   private getFont(options?: PrintOptions) {
     return `${this.getFontSize(options)}px ${this.getFontFamily(options)}`;
+  }
+
+  private getItemSpacing(options?: PrintOptions) {
+    const lineHeight = this.getLineHeight(options);
+    return options?.itemSpacing || lineHeight;
   }
 
   private getPadding(options?: PrintOptions) {
@@ -166,6 +174,60 @@ class Canvas {
       .reduce((total, char) => (total + context.measureText(char).width), 0);
 
     return { ...metadata, width };
+  }
+
+  private getPrintingWords(input: string) {
+    const newLineRegex = new RegExp(this.newLineChar);
+    return input
+      .split(/\s/)
+      .filter(Boolean)
+      .reduce((words, item) => {
+        if (newLineRegex.test(item)) {
+          item
+            .split(newLineRegex)
+            .filter(Boolean)
+            .forEach((str, index) => {
+              words.push({
+                value: str,
+                isNewLine: index !== 0,
+              });
+            });
+        } else {
+          words.push({
+            value: item,
+            isNewLine: false,
+          });
+        }
+
+        return words;
+      }, [] as Array<{ value: string, isNewLine: boolean }>);
+  }
+
+  private getPrintingLines(input: string, position: Point, options?: PrintOptions) {
+    const rectangle = this.getRectangleForText(position, options);
+    const padding = this.getPadding(options);
+    const lineWidth = rectangle.width - padding.left - padding.right;
+    const words = this.getPrintingWords(input);
+    return words.reduce((acc, word) => {
+      const index = Math.max(acc.length - 1, 0);
+      const line = acc[index];
+
+      if (word.isNewLine) {
+        acc.push(word.value);
+        return acc;
+      }
+
+      const extendedLine = (line.length > 0) ? `${line} ${word.value}` : word.value;
+      const metadata = this.measureText(extendedLine, options);
+
+      if (metadata.width <= lineWidth) {
+        acc[index] = extendedLine;
+      } else {
+        acc.push(word.value);
+      }
+
+      return acc;
+    }, [''] as string[]);
   }
 
   // eslint-disable-next-line max-len
@@ -291,6 +353,10 @@ class Canvas {
     this.context = context as CanvasRenderingContext2D;
   }
 
+  public getChildNodes() {
+    return this.context.canvas.childNodes || [];
+  }
+
   public setWidth(width: number) {
     this.context.canvas.width = width;
   }
@@ -311,32 +377,31 @@ class Canvas {
 
   public async print(input: string, position: Point, options?: PrintOptions) {
     const lineHeight = this.getLineHeight(options);
-    const rectangle = this.getRectangleForText(position, options);
-    const padding = this.getPadding(options);
-    const lineWidth = rectangle.width - padding.left - padding.right;
-    const words = input.split(' ');
-    const lines = words.reduce((acc, word) => {
-      const index = Math.max(acc.length - 1, 0);
-      const line = acc[index];
-      const extendedLine = (line.length > 0) ? `${line} ${word}` : word;
-      const metadata = this.measureText(extendedLine, options);
+    const lines = this.getPrintingLines(input, position, options);
+    let currentPosition = position;
 
-      if (metadata.width <= lineWidth) {
-        acc[index] = extendedLine;
-      } else {
-        acc.push(word);
-      }
+    for await (const line of lines) {
+      await this.printLine(line, currentPosition, options);
+      currentPosition = new Point(position.x, currentPosition.y + lineHeight);
+    }
 
-      return acc;
-    }, [''] as string[]);
+    return {
+      finishPosition: new Point(currentPosition.x, currentPosition.y - lineHeight),
+    };
+  }
 
-    await lines.reduce(
-      (promise, line) => promise.then(async (point) => {
-        await this.printLine(line, point, options);
-        return new Point(point.x, point.y + lineHeight);
-      }),
-      Promise.resolve(position),
-    );
+  public async printList(items: string[], position: Point, options?: PrintOptions) {
+    const itemSpacing = this.getItemSpacing(options);
+    let currentPosition = position;
+
+    for await (const item of items) {
+      const metadata = await this.print(item, currentPosition, options);
+      currentPosition = new Point(currentPosition.x, metadata.finishPosition.y + itemSpacing);
+    }
+
+    return {
+      finishPosition: new Point(currentPosition.x, currentPosition.y - itemSpacing),
+    };
   }
 }
 
