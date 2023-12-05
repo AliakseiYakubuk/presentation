@@ -23,6 +23,8 @@
   --md-breakpoint: 600px;
   --lg-breakpoint: 900px;
   --xl-breakpoint: 1280px;
+
+  --view-margin: 200px;
 }
 
 * {
@@ -34,21 +36,56 @@ body {
   height: 100vh;
   padding: 0;
   margin: 0;
-  
   background-color: black;
 }
 
 
 .container {
+  position: relative;
+  overflow: hidden;
   /* display: flex; */
   /* flex-direction: column; */
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-position-y: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1;
+  
+  /* @media (width < 900px) {
+    left: 0;
+    width: 100%;
+  } */
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
 }
 
 .view {
   width: 100%;
   min-height: 100vh;
   display: flex;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   overflow: hidden;
   font-size: 1.5em; 
   
@@ -63,7 +100,7 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    border: 2px solid white;
+    /* border: 2px solid white; */
   }
 
   &_section {
@@ -71,7 +108,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid red;
+    /* border: 2px solid red; */
   }
 }
 
@@ -80,6 +117,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 20vh;
 
 
   .contacts {
@@ -128,6 +166,9 @@ body {
 }
 
 .skills {
+  margin-bottom: 20vh;
+  position: relative;
+
   &_left {
     @media (width < 900px) {
       display: none;
@@ -136,22 +177,26 @@ body {
 
   &_right {
     @media (width < 900px) {
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: start;
       width: 100%;
     }
   }
 
   &_list {
-    padding: 24px 48px;
+    margin: 0;
+    padding: 48px;
     
     @media (width < 900px) {
-      padding: 24px 16px 24px 32px; 
+      padding: 48px 48px 48px 48px; 
     }
 
     &_item {
       padding-bottom: 16px;
     }
   }
+
+
 
 }
 
@@ -180,24 +225,95 @@ body {
     }
   }
 
-  &_image {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 50vw;
-    height: 100%;
-    background-image: url("./assets/me.webp");
-    background-position-x: left;
-    background-position-y: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    box-shadow: inset 10px 0px 10px 5px #000;
-    
-    @media (width < 900px) {
-      display: none;
+
+}
+
+.skills_image {
+  top: 110vh;
+  left: 0;
+  width: 50%;
+  height: 120vh;
+  background-image: url("./assets/test6.jpg");
+  background-position: left;
+  overflow: hidden;
+
+  &:before {
+    background: linear-gradient(
+      0deg,  
+      rgba(0,0,0,1) 0%, 
+      rgba(255,255,255,0) 10%,
+      rgba(255,255,255,0) 90%, 
+      rgba(0,0,0,1) 100%
+    );
+  }
+  &:after {
+    background: linear-gradient(
+      90deg,  
+      rgba(255,255,255,0) 0%,
+      rgba(0,0,0,1) 100% 
+    );
+  }
+
+  @media (width > 1900px) {
+    background-image: url("./assets/test3.jpg");
+  }
+
+  @media (width < 900px) {
+    top: 140vh;
+    width: 100%;
+    height: 90vh;
+
+
+    &:before {
+      background: linear-gradient(
+        120deg,  
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 47%,
+        rgba(255,255,255,0) 100%
+      );
+    }
+    &:after {
+      /* background: none; */
+      background: linear-gradient(
+        0deg,  
+        rgba(0,0,0,1) 0%,
+        rgba(255,255,255,0) 25%
+      );
     }
   }
+
+/* 
+  &:before {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+  }
+  
+  @media (width > 1900px) {
+    background-image: url("./assets/test3.jpg");
+  }
+
+  @media (width < 900px) {
+    display: none;
+  } */
+
 }
+
+.about_image {
+  width: 50%;
+  height: 100vh;
+  bottom: 0;
+  left: 50%;
+  background-image: url("./assets/me.jpg");
+  background-position-x: 35%;
+/* 
+  &:before {
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%);
+  }
+  
+  @media (width < 900px) {
+    display: none;
+  } */
+}
+
 
 
 @keyframes appear {
