@@ -87,9 +87,7 @@ class Home {
         const contacts = document.getElementById('contacts');
         if (contacts) {
           requestAnimationFrame(() => {
-            // contacts.style.animationName = 'appear';
             contacts.classList.add('contacts_visible');
-
             resolve(true);
           });
         }

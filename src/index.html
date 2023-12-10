@@ -9,7 +9,7 @@
     <title>localhost</title>
   </head>
 
-  <body style="background-color: black">
+  <body>
     <main class="container">
       <div class="view home">
         <canvas id="logo">
@@ -17,14 +17,6 @@
         </canvas>
 
         <section id="contacts" class="contacts">
-          <a href="https://www.linkedin.com/in/aliakseiyakubuk/" class="contact" target="_blank" rel="noopener">
-            <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px"
-              viewBox="-5.5 0 32 32">
-              <path fill="#fff"
-                d="M0 8.22v15.56a2.6 2.6 0 0 0 2.63 2.63h15.56c.72 0 1.4-.35 1.84-.78.47-.47.78-1.07.78-1.85V8.22a2.6 2.6 0 0 0-2.62-2.63H2.63c-.79 0-1.38.32-1.85.78A2.7 2.7 0 0 0 0 8.22zm2.81 2.06c0-1 .82-1.87 1.82-1.87a1.9 1.9 0 0 1 1.87 1.87c0 1.03-.84 1.85-1.87 1.85-1 0-1.82-.82-1.82-1.85zm5.03 12.85v-9.54c0-.22.22-.4.38-.4h2.66c.37 0 .37.44.37.72.75-.75 1.72-.94 2.72-.94 2.44 0 4 1.15 4 3.72v6.44c0 .21-.19.4-.38.4h-2.75c-.21 0-.37-.22-.37-.4V17.3c0-.97-.28-1.5-1.38-1.5-1.37 0-1.71.9-1.71 2.13v5.19c0 .21-.22.4-.44.4H8.22c-.16 0-.38-.22-.38-.4zm-4.96 0v-9.54c0-.22.21-.4.37-.4h2.72c.25 0 .4.15.4.4v9.54c0 .21-.18.4-.4.4H3.25c-.19 0-.38-.22-.38-.4z" />
-            </svg>
-            LinkedIn
-          </a>
           <a href="https://github.com/AliakseiYakubuk" class="contact" target="_blank" rel="noopener">
             <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24">
               <path fill="none" d="M0 0h24v24H0z" />
@@ -32,6 +24,15 @@
                 d="M12 2a10 10 0 0 0-3.16 19.5c.5.08.66-.23.66-.5v-1.69C6.73 19.91 6.14 18 6.14 18A2.69 2.69 0 0 0 5 16.5c-.91-.62.07-.6.07-.6a2.1 2.1 0 0 1 1.53 1 2.15 2.15 0 0 0 2.91.83 2.16 2.16 0 0 1 .63-1.34C8 16.17 5.62 15.31 5.62 11.5a3.87 3.87 0 0 1 1-2.71 3.58 3.58 0 0 1 .1-2.64s.84-.27 2.75 1a9.63 9.63 0 0 1 5 0c1.91-1.29 2.75-1 2.75-1a3.58 3.58 0 0 1 .1 2.64 3.87 3.87 0 0 1 1 2.71c0 3.82-2.34 4.66-4.57 4.91a2.39 2.39 0 0 1 .69 1.85V21c0 .27.16.59.67.5A10 10 0 0 0 12 2Z" />
             </svg>
             Github
+          </a>
+          <a href="https://www.linkedin.com/in/aliakseiyakubuk/" class="contact linkedin" target="_blank"
+            rel="noopener">
+            <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px"
+              viewBox="-5.5 0 32 32">
+              <path fill="#fff"
+                d="M0 8.22v15.56a2.6 2.6 0 0 0 2.63 2.63h15.56c.72 0 1.4-.35 1.84-.78.47-.47.78-1.07.78-1.85V8.22a2.6 2.6 0 0 0-2.62-2.63H2.63c-.79 0-1.38.32-1.85.78A2.7 2.7 0 0 0 0 8.22zm2.81 2.06c0-1 .82-1.87 1.82-1.87a1.9 1.9 0 0 1 1.87 1.87c0 1.03-.84 1.85-1.87 1.85-1 0-1.82-.82-1.82-1.85zm5.03 12.85v-9.54c0-.22.22-.4.38-.4h2.66c.37 0 .37.44.37.72.75-.75 1.72-.94 2.72-.94 2.44 0 4 1.15 4 3.72v6.44c0 .21-.19.4-.38.4h-2.75c-.21 0-.37-.22-.37-.4V17.3c0-.97-.28-1.5-1.38-1.5-1.37 0-1.71.9-1.71 2.13v5.19c0 .21-.22.4-.44.4H8.22c-.16 0-.38-.22-.38-.4zm-4.96 0v-9.54c0-.22.21-.4.37-.4h2.72c.25 0 .4.15.4.4v9.54c0 .21-.18.4-.4.4H3.25c-.19 0-.38-.22-.38-.4z" />
+            </svg>
+            LinkedIn
           </a>
           <a href="mailto:aliaksei.yakubuk@gmail.com" class="contact">
 
@@ -47,11 +48,12 @@
 
       </div>
 
-      <div class="view skills">
+      <div id="skills_view" class="view skills">
+        <div id="skills_image" class="skills_image background"></div>
         <section class="view_container">
           <section class="view_section skills_left"></section>
           <section class="view_section skills_right">
-            <ul class="skills_list">
+            <ul id="skills_list" class="skills_list">
               <li class="skills_list_item">My primary language is JavaScript/TypeScript</li>
               <li class="skills_list_item">I write sever-side logic</li>
               <li class="skills_list_item">I write client-side logic</li>
@@ -66,10 +68,11 @@
         </section>
       </div>
 
-      <div id="about" class="view about">
+      <div id="about_view" class="view about">
+        <div id="about_image" class="about_image background"></div>
         <div class="view_container">
           <section class="view_section about_left">
-            <p class="about_me">
+            <p id="about_content" class="about_content">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula, nisl sit amet iaculis faucibus,
               lectus turpis congue libero, id rhoncus turpis sapien vitae risus. Donec arcu risus, interdum et aliquet
               nec, sollicitudin eu augue. In vel lorem et eros rutrum elementum nec ac leo. Lorem ipsum dolor sit amet,
@@ -77,15 +80,11 @@
               netus et malesuada fames ac turpis egestas. Fusce venenatis luctus commodo.
             </p>
           </section>
-          <section class="view_section about_right">
-            007
+          <section class="view_section about_right"></section>
           </section>
-          </section>
-
         </div>
       </div>
-      <div class="skills_image background"></div>
-      <div class="about_image background"></div>
+
     </main>
     <script type="module" src="main.ts"></script>
   </body>
