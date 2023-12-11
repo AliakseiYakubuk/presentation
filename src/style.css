@@ -192,7 +192,9 @@ body {
     padding: 24px 24px 24px 40px;
     transform: translateX(50px);
     opacity: 0;
-    transition: all 500ms ease-out;
+    transition: 
+      opacity 500ms ease-out,
+      transform 500ms ease-out;
 
     &_visible {
       opacity: 1;
@@ -204,10 +206,6 @@ body {
 
       @media (width < 900px) {
         padding-bottom: 8px;
-
-        @media (orientation: portrait) {
-          padding-bottom: 16px;
-        }
       }
     }
   }
@@ -251,8 +249,24 @@ body {
           rgba(0,0,0,1) 100%
         );
       }
+    }
   
-      @media (orientation: portrait) {
+    @media (width < 600px) {
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  @media (orientation: portrait) {
+    
+    @media (width < 900px) {
+      &_list {
+        &_item {
+          padding-bottom: 16px;
+        }
+      }
+
+      &_image {
         &:before {
           background: linear-gradient(
             180deg, 
@@ -260,7 +274,7 @@ body {
             rgba(255, 255, 255, 0) 100%
           )
         }
-    
+
         &:after {
           background: linear-gradient(
             0deg,  
@@ -269,14 +283,10 @@ body {
           );
         } 
       }
-  
     }
-  
+
     @media (width < 600px) {
-      left: 0;
-      width: 100%;
-  
-      @media (orientation: portrait) {
+      &_image {
         &:before {
           background: radial-gradient(
             circle at 3% 0%,
@@ -285,16 +295,17 @@ body {
             rgba(255, 255, 255, 0) 100%
           );
         }
-    
+
         &:after {
           background: linear-gradient(
-            346deg,  
+            345deg,  
             rgba(0,0,0,1) 9%,
             rgba(255,255,255,0) 35%
           );
         } 
       }
     }
+
   }
 }
 
@@ -333,7 +344,9 @@ body {
     margin: 0;
     opacity: 0;
     transform: translateX(-50px);
-    transition: all 500ms ease-out;
+    transition: 
+      opacity 500ms ease-out,
+      transform 500ms ease-out;
 
     &_visible {
       opacity: 1;
@@ -556,10 +569,6 @@ body {
   }
 
 }
-
-
-
-
 
 @keyframes appear {
   from {
