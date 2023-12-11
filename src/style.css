@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'ubuntu';
+  font-family: ubuntu;
   src:  url('./assets/ubuntu.ttf') format('truetype')
         url('./assets/ubuntu-bold.ttf') format('truetype')
 }
@@ -11,19 +11,17 @@
   font-weight: 400;
   font-size: 16px;
   color: #fff;
-
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   background-color: black;
 
   --sm-breakpoint: 450px;
   --md-breakpoint: 600px;
   --lg-breakpoint: 900px;
   --xl-breakpoint: 1280px;
-
   --background-height: 120vh;
   --view-spacing: 20vh;
 }
@@ -56,7 +54,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   
-  &:before {
+  &::before {
     content: "";
     position: absolute;
     top: 0;
@@ -65,7 +63,7 @@ body {
     height: 100%;
   }
 
-  &:after {
+  &::after {
     content: "";
     position: absolute;
     top: 0;
@@ -145,6 +143,19 @@ body {
     border-radius: 8px;
     transition: background-color 150ms;
 
+    &:hover {
+      background-color: rgb(255 255 255 / 10%);
+    }
+
+    &:focus {
+      outline: none;
+      background-color: rgb(255 255 255 / 10%);
+    }
+
+    &_icon {
+      margin-right: 12px;
+    }
+
     @media (orientation: portrait) {
       margin: 8px;
 
@@ -154,18 +165,6 @@ body {
     }
   }
   
-  .contact:hover {
-    background-color: rgba(255,255,255,0.1);
-  }
-  
-  .contact:focus {
-    outline: none;
-    background-color: rgba(255,255,255,0.1);
-  }
-  
-  .contact_icon {
-    margin-right: 12px;
-  }
   
 }
 
@@ -198,7 +197,7 @@ body {
 
     &_visible {
       opacity: 1;
-      transform: translateX(0px);
+      transform: translateX(0);
     }
 
     &_item {
@@ -225,11 +224,11 @@ body {
       opacity: 1;
     }
   
-    &:before {
+    &::before {
       background: linear-gradient(
         90deg,  
-        rgba(255,255,255,0) 0%,
-        rgba(0,0,0,1) 100%
+        rgb(255 255 255 / 0%) 0%,
+        rgb(0 0 0 / 100%) 100%
       );
     }
   
@@ -241,12 +240,12 @@ body {
       left: 0;
       width: 100%;
   
-      &:before {
+      &::before {
         background: linear-gradient(
           270deg,  
-          rgba(255,255,255,0) 0%,
-          rgba(0,0,0,1) 65%,
-          rgba(0,0,0,1) 100%
+          rgb(255 255 255 / 0%) 0%,
+          rgb(0 0 0 / 100%) 65%,
+          rgb(0 0 0 / 100%) 100%
         );
       }
     }
@@ -258,7 +257,6 @@ body {
   }
 
   @media (orientation: portrait) {
-    
     @media (width < 900px) {
       &_list {
         &_item {
@@ -267,19 +265,19 @@ body {
       }
 
       &_image {
-        &:before {
+        &::before {
           background: linear-gradient(
             180deg, 
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(255, 255, 255, 0) 100%
+            rgb(0 0 0 / 100%) 0%, 
+            rgb(255 255 255 / 0%) 100%
           )
         }
 
-        &:after {
+        &::after {
           background: linear-gradient(
             0deg,  
-            rgba(0,0,0,1) 0%,
-            rgba(255,255,255,0) 40%
+            rgb(0 0 0 / 100%) 0%,
+            rgb(255 255 255 / 0%) 40%
           );
         } 
       }
@@ -287,20 +285,20 @@ body {
 
     @media (width < 600px) {
       &_image {
-        &:before {
+        &::before {
           background: radial-gradient(
             circle at 3% 0%,
-            rgba(0, 0, 0, 1) 0%, 
-            rgba(0, 0, 0, 1) 33%,
-            rgba(255, 255, 255, 0) 100%
+            rgb(0 0 0 / 100%) 0%, 
+            rgb(0 0 0 / 100%) 33%,
+            rgb(255 255 255 / 0%) 100%
           );
         }
 
-        &:after {
+        &::after {
           background: linear-gradient(
             345deg,  
-            rgba(0,0,0,1) 9%,
-            rgba(255,255,255,0) 35%
+            rgb(0 0 0 / 100%) 9%,
+            rgb(255 255 255 / 0%) 35%
           );
         } 
       }
@@ -324,7 +322,7 @@ body {
     }
 
     @media (width < 250px) {
-      padding-bottom: 0px;
+      padding-bottom: 0;
     }
   }
 
@@ -350,7 +348,7 @@ body {
 
     &_visible {
       opacity: 1;
-      transform: translateX(0px);
+      transform: translateX(0);
     }
   }
 
@@ -371,11 +369,11 @@ body {
       opacity: 1;
     }
 
-    &:before {
+    &::before {
       background: linear-gradient(
         90deg,  
-        rgba(0,0,0,1) 0%,
-        rgba(255,255,255,0) 35%
+        rgb(0 0 0 / 100%) 0%,
+        rgb(255 255 255 / 0%) 35%
       );
     }
     
@@ -383,11 +381,11 @@ body {
       left: 0;
       background-position: left 40% top;
 
-      &:before {
+      &::before {
         background: linear-gradient(
           270deg,  
-          rgba(0,0,0,1) 0%,
-          rgba(255,255,255,0) 35%
+          rgb(0 0 0 / 100%) 0%,
+          rgb(255 255 255 / 0%) 35%
         );
       }
     }
@@ -399,19 +397,19 @@ body {
       background-size: 220%;
       background-position: left 35% top 10%;
 
-      &:before {
+      &::before {
         background: linear-gradient(
           180deg,  
-          rgba(0,0,0,1) 1%,
-          rgba(255,255,255,0) 35%
+          rgb(0 0 0 / 100%) 1%,
+          rgb(255 255 255 / 0%) 35%
         );
       }
 
-      &:after {
+      &::after {
         background: linear-gradient(
           0deg,  
-          rgba(0,0,0,1) 0%,
-          rgba(255,255,255,0) 7%
+          rgb(0 0 0 / 100%) 0%,
+          rgb(255 255 255 / 0%) 7%
         );
       }
     }
@@ -433,15 +431,15 @@ body {
       background-size: unset;
       background-position: center;
 
-      &:before {
+      &::before {
         background: linear-gradient(
           180deg,  
-          rgba(0,0,0,1) 0%,
-          rgba(255,255,255,0) 100%
+          rgb(0 0 0 / 100%) 0%,
+          rgb(255 255 255 / 0%) 100%
         );
       }
 
-      &:after {
+      &::after {
         backdrop-filter: blur(15px);
         background: none;
       }
@@ -449,32 +447,36 @@ body {
   }
 
   @media (orientation: portrait) {
-    @media (min-width: 900px) and (height > 2000px) {
+    @media (width >= 900px) and (height > 2000px) {
       &_left {
         width: 100%;
       }
+
       &_right {
         display: none;
       }
+
       &_content {
         text-align: center;
       }
+
       &_image {
-        &:before {
+        &::before {
           backdrop-filter: blur(50px);
           background: none;
         }
-        &:after {
+
+        &::after {
           background: linear-gradient(
             90deg,  
-            rgba(0,0,0,1) 0%,
-            rgba(255,255,255,0) 100%
+            rgb(0 0 0 / 100%) 0%,
+            rgb(255 255 255 / 0%) 100%
           );
         }
       }
     }
 
-    @media (min-width: 900px) and (width < 1280px) {
+    @media (width >= 900px) and (width < 1280px) {
       &_left {
         width: 35%;
       }
@@ -490,7 +492,7 @@ body {
       }
     }
 
-    @media (min-width: 600px) and (width < 900px) {
+    @media (width >= 600px) and (width < 900px) {
       &_left {
         width: 100%;
         align-items: flex-start;
@@ -506,11 +508,11 @@ body {
         bottom: unset;
         top: 20%;
 
-        &:before {
+        &::before {
           background: linear-gradient(
             180deg,  
-            rgba(0,0,0,1) 5%,
-            rgba(255,255,255,0) 35%
+            rgb(0 0 0 / 100%) 5%,
+            rgb(255 255 255 / 0%) 35%
           );
         }
       }
@@ -521,15 +523,16 @@ body {
 
       @media (height > 3000px) {
         &_image {
-          &:before {
+          &::before {
             backdrop-filter: blur(50px);
             background: none;
           }
-          &:after {
+
+          &::after {
             background: linear-gradient(
               180deg,  
-              rgba(0,0,0,1) 0%,
-              rgba(255,255,255,0) 100%
+              rgb(0 0 0 / 100%) 0%,
+              rgb(255 255 255 / 0%) 100%
             );
           }
         }

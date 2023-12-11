@@ -6,7 +6,9 @@
   "scripts": {
     "start": "vite --host",
     "build": "tsc && vite build --emptyOutDir",
-    "lint": "eslint src --ext .ts --fix",
+    "lint": "yarn eslint && yarn stylelint",
+    "eslint": "eslint src --ext .ts --fix",
+    "stylelint": "stylelint **/*.css --fix",
     "preview": "vite preview"
   },
   "engines": {
@@ -26,6 +28,8 @@
     "postcss-load-config": "^5.0.0",
     "postcss-nested": "^6.0.1",
     "postcss-plugin": "^1.0.0",
+    "stylelint": "^16.0.1",
+    "stylelint-config-standard": "^35.0.0",
     "tsc": "2.0.4",
     "typescript": "5.0.2",
     "vite": "4.3.9",
