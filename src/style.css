@@ -28,6 +28,19 @@
 
 * {
   box-sizing: border-box;
+
+}
+
+button {
+  background: none;
+
+  &:hover {
+    background: none;
+  }
+
+  &:focus {
+    background: none;
+  }
 }
 
 body {
@@ -39,7 +52,6 @@ body {
   margin: 0;
   background-color: black;
 }
-
 
 .container {
   width: 100%;
@@ -115,9 +127,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
+    opacity: 0; 
+    pointer-events: none; 
+    transform: translateY(20px); 
 
     &_visible {
       opacity: 1;
@@ -138,6 +150,8 @@ body {
     align-items: center;
     color: white;
     text-decoration: none;
+    min-width: 190px; 
+    min-height: 65px;
     padding: 8px 16px;
     margin: 4px;
     border-radius: 8px;
@@ -155,8 +169,98 @@ body {
     &_icon {
       margin-right: 12px;
     }
+  }
 
-    @media (orientation: portrait) {
+  .open_email {
+    @media (min-width: 1280px) {
+      display: none;
+    }
+  }
+  
+  .copy_email {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    outline: none;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    
+    &:hover {
+      cursor: pointer;
+
+      .copy_email_label_default {
+        opacity: 0;
+      }
+      
+      .copy_email_label_hover {
+        opacity: 1;
+      }
+    }
+
+    &_label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+      transition: opacity 150ms ease-out;
+    }
+
+    &_label_default {
+      opacity: 1;
+    }
+    
+    &_label_hover {
+      opacity: 0;
+    }
+
+    &_label_success {
+      opacity: 0;
+    }
+
+    @media (width < 1280px) {
+      display: none;
+    }
+  }
+
+  .copy_email_active {
+    .copy_email_label_default {
+      opacity: 0;
+    }
+    
+    .copy_email_label_hover {
+      opacity: 0;
+    }
+
+    .copy_email_label_success {
+      opacity: 1;
+    }
+
+    &:hover {
+      cursor: unset;
+
+      .copy_email_label_default {
+        opacity: 0;
+      }
+      
+      .copy_email_label_hover {
+        opacity: 0;
+      }
+    }
+  }
+
+  @media (orientation: portrait) {
+    .contacts {
+      flex-direction: column;
+    }
+
+    .contact {
       margin: 8px;
 
       &.linkedin {
@@ -164,8 +268,6 @@ body {
       }
     }
   }
-  
-  
 }
 
 .skills {

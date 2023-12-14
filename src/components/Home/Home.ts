@@ -95,6 +95,47 @@ class Home {
     });
   }
 
+  private hasClipboardAPI() {
+    return Boolean(navigator.clipboard);
+  }
+
+  private async copyToClipboard(value: string) {
+    if (this.hasClipboardAPI()) {
+      try {
+        await navigator.clipboard.writeText(value);
+        this.copySuccessMessage();
+      } catch (error) { } // eslint-disable-line no-empty
+    }
+  }
+
+  private async copySuccessMessage() {
+    const element = document.getElementById('copy_email');
+    const className = 'copy_email_active';
+
+    if (element) {
+      element.classList.add(className);
+
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          element.classList.remove(className);
+          resolve();
+        }, 3000);
+      });
+    }
+  }
+
+  private showOpenEmailContact() {
+    const openEmail = document.getElementById('open_email');
+    const copyEmail = document.getElementById('copy_email');
+
+    if (openEmail) {
+      openEmail.style.display = 'flex';
+    }
+    if (copyEmail) {
+      copyEmail.style.display = 'none';
+    }
+  }
+
   constructor(canvas: Canvas) {
     this.canvas = canvas;
   }
@@ -120,6 +161,16 @@ class Home {
     );
 
     await this.showContacts();
+  }
+
+  public async listenClickCopyEmail(email: string) {
+    const element = document.getElementById('copy_email');
+
+    if (this.hasClipboardAPI() && element) {
+      element.addEventListener('click', () => this.copyToClipboard(email));
+    } else {
+      this.showOpenEmailContact();
+    }
   }
 }
 

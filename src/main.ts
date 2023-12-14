@@ -21,10 +21,8 @@ const about = new SecondaryView({
   contentActiveClass: 'about_content_visible',
 });
 
+home.listenClickCopyEmail('aliaksei.yakubuk@gmail.com');
 about.listenIntersection();
 skills.listenIntersection();
 
 await home.draw();
-
-// (Skills.init().then((view) => view.draw()));
-// (About.init().then((view) => view.draw()));
