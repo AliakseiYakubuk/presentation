@@ -1,4 +1,3 @@
-// import { About } from './components/About';
 import { Home } from './components/Home';
 import { SecondaryView } from './components/SecondaryView';
 import './style.css';
@@ -22,7 +21,6 @@ const about = new SecondaryView({
 });
 
 home.listenClickCopyEmail('aliaksei.yakubuk@gmail.com');
+home.listenScreenResize();
 about.listenIntersection();
 skills.listenIntersection();
-
-await home.draw();

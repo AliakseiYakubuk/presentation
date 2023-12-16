@@ -32,6 +32,10 @@ class View {
   protected isXlScreen() {
     return !this.isLgScreen() && (document.body.clientWidth > this.breakpoints.md);
   }
+
+  protected isWidthLessThan(value: number) {
+    return document.body.clientWidth < value;
+  }
 }
 
 export default View;

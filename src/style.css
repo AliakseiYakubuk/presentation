@@ -24,12 +24,12 @@
   --xl-breakpoint: 1280px;
   --background-height: 120vh;
   --view-spacing: 20vh;
+  
+  * {
+    box-sizing: border-box;
+  }
 }
 
-* {
-  box-sizing: border-box;
-
-}
 
 button {
   background: none;
@@ -152,7 +152,7 @@ body {
     text-decoration: none;
     min-width: 190px; 
     min-height: 65px;
-    padding: 8px 16px;
+    padding: 0 16px;
     margin: 4px;
     border-radius: 8px;
     transition: background-color 150ms;

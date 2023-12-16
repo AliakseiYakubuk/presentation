@@ -26,9 +26,12 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/no-loop-func": "off",
+    "eslint-disable consistent-return": "off",
     "no-restricted-exports": "off",
     "import/prefer-default-export": "off",
     "class-methods-use-this": "off",
+    "no-await-in-loop": "off",
     "no-restricted-syntax": ["off", "ForOfStatement"]
   }
 }

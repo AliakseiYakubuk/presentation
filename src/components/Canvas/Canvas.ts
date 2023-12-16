@@ -1,8 +1,13 @@
-/* eslint-disable @typescript-eslint/no-loop-func */
-/* eslint-disable no-await-in-loop */
+/* eslint-disable no-param-reassign */
 
 import { Point } from '../Point';
 import { Rectangle } from '../Rectangle';
+
+type ActionId = string;
+
+type ActionState = {
+  stop: () => void
+};
 
 type CursorPrintOptions = {
   start?: {
@@ -28,7 +33,6 @@ type PaddingPrintOptions = {
 export type PrintOptions = {
   fontSize?: number,
   lineHeight?: number,
-  itemSpacing?: number,
   fontFamily?: string,
   align?: 'left' | 'center' | 'right',
   color?: string,
@@ -37,6 +41,7 @@ export type PrintOptions = {
   speed?: SpeedPrintOptions,
   cursor?: CursorPrintOptions,
   padding?: PaddingPrintOptions
+  actionId?: ActionId,
 };
 
 class Canvas {
@@ -51,7 +56,11 @@ class Canvas {
 
   private readonly context: CanvasRenderingContext2D;
 
-  private readonly newLineChar: string = '\\\\n';
+  private state: Map<ActionId, ActionState> = new Map();
+
+  private getActionId() {
+    return Math.random().toString(36).slice(2);
+  }
 
   private checkCanvasExists(htmlCanvas: HTMLCanvasElement | null) {
     if (!htmlCanvas) {
@@ -73,12 +82,6 @@ class Canvas {
 
   private randomNumberInRange(min: number, max: number) {
     return min + (max - min) * Math.random();
-  }
-
-  private async waitFor(ms: number) {
-    await new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   }
 
   private getFontFamily(options?: PrintOptions) {
@@ -108,11 +111,6 @@ class Canvas {
 
   private getFont(options?: PrintOptions) {
     return `${this.getFontSize(options)}px ${this.getFontFamily(options)}`;
-  }
-
-  private getItemSpacing(options?: PrintOptions) {
-    const lineHeight = this.getLineHeight(options);
-    return options?.itemSpacing || lineHeight;
   }
 
   private getPadding(options?: PrintOptions) {
@@ -176,60 +174,6 @@ class Canvas {
     return { ...metadata, width };
   }
 
-  private getPrintingWords(input: string) {
-    const newLineRegex = new RegExp(this.newLineChar);
-    return input
-      .split(/\s/)
-      .filter(Boolean)
-      .reduce((words, item) => {
-        if (newLineRegex.test(item)) {
-          item
-            .split(newLineRegex)
-            .filter(Boolean)
-            .forEach((str, index) => {
-              words.push({
-                value: str,
-                isNewLine: index !== 0,
-              });
-            });
-        } else {
-          words.push({
-            value: item,
-            isNewLine: false,
-          });
-        }
-
-        return words;
-      }, [] as Array<{ value: string, isNewLine: boolean }>);
-  }
-
-  private getPrintingLines(input: string, position: Point, options?: PrintOptions) {
-    const rectangle = this.getRectangleForText(position, options);
-    const padding = this.getPadding(options);
-    const lineWidth = rectangle.width - padding.left - padding.right;
-    const words = this.getPrintingWords(input);
-    return words.reduce((acc, word) => {
-      const index = Math.max(acc.length - 1, 0);
-      const line = acc[index];
-
-      if (word.isNewLine) {
-        acc.push(word.value);
-        return acc;
-      }
-
-      const extendedLine = (line.length > 0) ? `${line} ${word.value}` : word.value;
-      const metadata = this.measureText(extendedLine, options);
-
-      if (metadata.width <= lineWidth) {
-        acc[index] = extendedLine;
-      } else {
-        acc.push(word.value);
-      }
-
-      return acc;
-    }, [''] as string[]);
-  }
-
   // eslint-disable-next-line max-len
   private getPrintingStartPoint(metadata: ReturnType<typeof this.measureText>, rectangle: Rectangle, options?: PrintOptions) {
     const align = this.getTextAlign(options);
@@ -255,6 +199,39 @@ class Canvas {
       rectangle.width,
       rectangle.height,
     );
+  }
+
+  private async requestAnimationFrame(callback: () => unknown, id?: string) {
+    const actionId = id || this.getActionId();
+
+    return new Promise<void>((resolve, reject) => {
+      const operationId = requestAnimationFrame(async () => {
+        callback();
+        resolve();
+      });
+
+      this.state.set(actionId, {
+        stop: () => {
+          cancelAnimationFrame(operationId);
+          reject();
+        },
+      });
+    });
+  }
+
+  private async waitFor(ms: number, id?: string) {
+    const actionId = id || this.getActionId();
+
+    await new Promise((resolve, reject) => {
+      const timerId = setTimeout(resolve, ms);
+
+      this.state.set(actionId, {
+        stop: () => {
+          clearTimeout(timerId);
+          reject();
+        },
+      });
+    });
   }
 
   private drawCursor(posx: Point, options?: PrintOptions) {
@@ -284,21 +261,29 @@ class Canvas {
   private async drawAnimatedCursor(position: Point, ttl: number, options?: PrintOptions) {
     const startTime = Date.now();
     const cursor = this.getCursor(options);
+    const getDiff = () => Date.now() - startTime;
 
-    if (ttl < (1 * cursor.period)) {
+    if (ttl < (cursor.period)) {
       return;
     }
 
     const animateCursor = async () => {
-      const endTime = Date.now();
-      const diff = endTime - startTime;
+      await this.requestAnimationFrame(() => this.drawCursor(position, options));
 
-      this.drawCursor(position, options);
+      if (getDiff() >= ttl) {
+        return;
+      }
+
       await this.waitFor(cursor.period);
-      requestAnimationFrame(() => { this.removeCursor(position, options); });
+      await this.requestAnimationFrame(() => this.removeCursor(position, options));
+
+      if (getDiff() >= ttl) {
+        return;
+      }
+
       await this.waitFor(cursor.period);
 
-      if (diff < ttl) {
+      if (getDiff() < ttl) {
         await animateCursor();
       }
     };
@@ -306,43 +291,49 @@ class Canvas {
     if (cursor.end.sync) {
       await animateCursor();
     } else {
-      animateCursor();
+      animateCursor().catch((error) => {
+        if (error) {
+          console.error(error); // eslint-disable-line no-console
+        }
+      });
     }
   }
 
-  // eslint-disable-next-line max-len
-  private async drawAnimatedTextLine(input: string, rectangle: Rectangle, options?: PrintOptions) {
+  private async drawAnimatedTextLine(input: string, rectangle: Rectangle, params?: PrintOptions) {
+    const options = params || {};
     const speed = this.getSpeed(options);
     const cursor = this.getCursor(options);
     const metadata = this.measureText(input, options);
     const startPoint = this.getPrintingStartPoint(metadata, rectangle, options);
-    const positionX = startPoint.x;
-    const positionY = startPoint.y;
-    const textOptions = { ...options, align: 'left' } as PrintOptions;
+    const lastIndex = input.length - 1;
 
     let index = 0;
-    let position = positionX;
+    let position = startPoint.x;
 
-    await this.drawAnimatedCursor(new Point(positionX, positionY), cursor.start.ttl, options);
+    options.align = 'left';
+    options.actionId = options.actionId || this.getActionId();
 
-    for (index; index < input.length; index += 1) {
+    await this.drawAnimatedCursor(new Point(startPoint.x, startPoint.y), cursor.start.ttl, options);
+
+    for (index; index <= lastIndex; index += 1) {
       const char = input[index];
+      const { width } = this.measureText(char, options);
+      const nextPosition = position + width;
 
-      requestAnimationFrame(() => {
-        const { width } = this.measureText(char, options);
-        const nextPosition = position + width;
+      await this.requestAnimationFrame(() => {
+        this.removeCursor(new Point(position, startPoint.y), options);
+        this.drawText(char, new Point(position, startPoint.y), options);
 
-        this.drawText(char, new Point(position, positionY), textOptions);
-        this.drawCursor(new Point(nextPosition, positionY), options);
+        if (index < lastIndex) {
+          this.drawCursor(new Point(nextPosition, startPoint.y), options);
+        }
+      }, options.actionId);
 
-        position = nextPosition;
-      });
       await this.waitFor(this.randomNumberInRange(speed.min, speed.max));
-
-      this.removeCursor(new Point(position, positionY), options);
+      position = nextPosition;
     }
 
-    await this.drawAnimatedCursor(new Point(position, positionY), cursor.end.ttl, options);
+    await this.drawAnimatedCursor(new Point(position, startPoint.y), cursor.end.ttl, options);
   }
 
   constructor(htmlCanvas: HTMLCanvasElement | null) {
@@ -365,6 +356,14 @@ class Canvas {
     this.context.canvas.height = height;
   }
 
+  public async clear() {
+    this.state.forEach((state) => state.stop && state.stop());
+
+    await this.requestAnimationFrame(() => {
+      this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+    });
+  }
+
   public async printLine(input: string, position: Point, options?: PrintOptions) {
     const rectangle = this.getRectangleForText(position, options);
 
@@ -373,35 +372,6 @@ class Canvas {
     } else {
       this.drawTextLine(input, rectangle, options);
     }
-  }
-
-  public async print(input: string, position: Point, options?: PrintOptions) {
-    const lineHeight = this.getLineHeight(options);
-    const lines = this.getPrintingLines(input, position, options);
-    let currentPosition = position;
-
-    for await (const line of lines) {
-      await this.printLine(line, currentPosition, options);
-      currentPosition = new Point(position.x, currentPosition.y + lineHeight);
-    }
-
-    return {
-      finishPosition: new Point(currentPosition.x, currentPosition.y - lineHeight),
-    };
-  }
-
-  public async printList(items: string[], position: Point, options?: PrintOptions) {
-    const itemSpacing = this.getItemSpacing(options);
-    let currentPosition = position;
-
-    for await (const item of items) {
-      const metadata = await this.print(item, currentPosition, options);
-      currentPosition = new Point(currentPosition.x, metadata.finishPosition.y + itemSpacing);
-    }
-
-    return {
-      finishPosition: new Point(currentPosition.x, currentPosition.y - itemSpacing),
-    };
   }
 }
 

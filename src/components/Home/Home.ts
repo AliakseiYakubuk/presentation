@@ -1,5 +1,6 @@
 import { Canvas, PrintOptions } from '../Canvas';
 import { Point } from '../Point';
+import { View } from '../View';
 
 type CanvasOptions = {
   width: number;
@@ -11,7 +12,7 @@ type LabelOptions = {
   printOptions: PrintOptions
 };
 
-class Home {
+class Home extends View {
   static async init() {
     const canvas = await Canvas.init('logo');
     return new Home(canvas);
@@ -19,17 +20,13 @@ class Home {
 
   private canvas: Canvas;
 
-  private isSmallScreen() {
-    return document.body.clientWidth <= 550;
-  }
-
   private getCanvasOptions(): CanvasOptions {
     const options: CanvasOptions = {
       height: 150,
       width: document.body.clientWidth,
     };
 
-    if (this.isSmallScreen()) {
+    if (this.isMdScreen() || this.isSmScreen()) {
       options.height = 120;
     }
     return options;
@@ -46,12 +43,20 @@ class Home {
         background: '#000',
         animate: true,
         speed: { min: 50, max: 50 },
-        cursor: { start: { ttl: 400 } },
+        cursor: {
+          start: { ttl: 600 },
+          period: 400,
+        },
       },
     };
 
-    if (this.isSmallScreen()) {
+    if (this.isMdScreen() || this.isSmScreen()) {
       options.printOptions.fontSize = 40;
+      options.position = new Point(0, 40);
+    }
+
+    if (this.isWidthLessThan(350)) {
+      options.printOptions.fontSize = 30;
       options.position = new Point(0, 40);
     }
 
@@ -69,12 +74,19 @@ class Home {
         background: '#000',
         animate: true,
         speed: { min: 50, max: 50 },
-        cursor: { end: { ttl: Infinity, sync: false } },
+        cursor: {
+          end: { ttl: Infinity, sync: false },
+        },
       },
     };
 
-    if (this.isSmallScreen()) {
+    if (this.isSmScreen() || this.isMdScreen()) {
       options.printOptions.fontSize = 25;
+      options.position = new Point(0, 90);
+    }
+
+    if (this.isWidthLessThan(350)) {
+      options.printOptions.fontSize = 20;
       options.position = new Point(0, 90);
     }
 
@@ -137,30 +149,39 @@ class Home {
   }
 
   constructor(canvas: Canvas) {
+    super();
     this.canvas = canvas;
   }
 
-  public async draw() {
-    const nameOptions = this.getNameOptions();
-    const devotionOptions = this.getDevotionOptions();
-    const canvasOptions = this.getCanvasOptions();
+  public async drawLogo() {
+    try {
+      this.canvas.clear();
 
-    this.canvas.setWidth(canvasOptions.width);
-    this.canvas.setHeight(canvasOptions.height);
+      const nameOptions = this.getNameOptions();
+      const devotionOptions = this.getDevotionOptions();
+      const canvasOptions = this.getCanvasOptions();
 
-    await this.canvas.printLine(
-      'Aliaksei Yakubuk',
-      nameOptions.position,
-      nameOptions.printOptions,
-    );
+      this.canvas.setWidth(canvasOptions.width);
+      this.canvas.setHeight(canvasOptions.height);
 
-    await this.canvas.printLine(
-      'Software Engineer',
-      devotionOptions.position,
-      devotionOptions.printOptions,
-    );
+      await this.canvas.printLine(
+        'Aliaksei Yakubuk',
+        nameOptions.position,
+        nameOptions.printOptions,
+      );
 
-    await this.showContacts();
+      await this.canvas.printLine(
+        'Software Engineer',
+        devotionOptions.position,
+        devotionOptions.printOptions,
+      );
+
+      await this.showContacts();
+    } catch (error) {
+      if (error) {
+        console.error(error); // eslint-disable-line no-console
+      }
+    }
   }
 
   public async listenClickCopyEmail(email: string) {
@@ -170,6 +191,15 @@ class Home {
       element.addEventListener('click', () => this.copyToClipboard(email));
     } else {
       this.showOpenEmailContact();
+    }
+  }
+
+  public listenScreenResize() {
+    const element = document.getElementById('container');
+
+    if (element) {
+      const observer = new ResizeObserver(() => this.drawLogo());
+      observer.observe(element);
     }
   }
 }
