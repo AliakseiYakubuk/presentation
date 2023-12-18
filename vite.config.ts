@@ -24,6 +24,7 @@ export default defineConfig({
   },
   plugins: [
     createHtmlPlugin({
+      inject: { data: {} },
       minify: true,
     })
   ]

@@ -1,12 +1,5 @@
-@font-face {
-  font-family: ubuntu;
-  src:  url('./assets/ubuntu.ttf') format('truetype')
-        url('./assets/ubuntu-bold.ttf') format('truetype')
-}
-
-
 :root {
-  font-family: ubuntu, system-ui, Arial, sans-serif;
+  font-family: monospace, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
@@ -120,6 +113,19 @@ body {
   flex-direction: column;
   margin-bottom: var(--view-spacing);
 
+  .test {
+    width: 50%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: 2px solid red
+  }
+
+  .logo {
+    margin: 0 auto;
+  }
+
   .contacts {
     padding-top: 32px;
     padding-bottom: 16px;
@@ -129,7 +135,7 @@ body {
     align-items: center;
     opacity: 0; 
     pointer-events: none; 
-    transform: translateY(20px); 
+    transform: translateY(100px); 
 
     &_visible {
       opacity: 1;
@@ -316,7 +322,7 @@ body {
     left: 0;
     width: 50%;
     height: calc(100% + var(--view-spacing));
-    background-image: url("./assets/test6.jpg");
+    background-image: url("./assets/skills-small.webp");
     background-position: left;
     overflow: hidden;
     opacity: 0;
@@ -335,7 +341,7 @@ body {
     }
   
     @media (width > 1440px) {
-      background-image: url("./assets/test3.jpg");
+      background-image: url("./assets/skills-large.webp");
     }
   
     @media (width < 900px) {
@@ -459,7 +465,7 @@ body {
     left: 50%;
     width: 50%;
     height: calc(100% + var(--view-spacing));
-    background-image: url("./assets/me.jpg");
+    background-image: url("./assets/about.webp");
     background-position: left 35% center;
     opacity: 0;
     transition: opacity 1000ms ease-out;
@@ -673,6 +679,18 @@ body {
     }
   }
 
+}
+
+.fallback {
+  &.view.ie_hidden {
+    display: none;
+  }
+
+  &.view.ie {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @keyframes appear {

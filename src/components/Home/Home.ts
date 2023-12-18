@@ -2,6 +2,10 @@ import { Canvas, PrintOptions } from '../Canvas';
 import { Point } from '../Point';
 import { View } from '../View';
 
+type CanvasPrintOptions = {
+  fontFamily: string;
+};
+
 type CanvasOptions = {
   width: number;
   height: number;
@@ -20,6 +24,31 @@ class Home extends View {
 
   private canvas: Canvas;
 
+  private withDebounce<T extends () => void>(fn: T, ms: number) {
+    let isDebounced: boolean = false;
+
+    return () => {
+      if (isDebounced) {
+        return;
+      }
+
+      fn();
+      setTimeout(() => { isDebounced = false; }, ms);
+      isDebounced = true;
+    };
+  }
+
+  private getCurrentFontFamily() {
+    const element = document.getElementById('container');
+    const defaultFontFamily = 'monospace';
+
+    if (element) {
+      return getComputedStyle(element).fontFamily || defaultFontFamily;
+    }
+
+    return defaultFontFamily;
+  }
+
   private getCanvasOptions(): CanvasOptions {
     const options: CanvasOptions = {
       height: 150,
@@ -32,12 +61,12 @@ class Home extends View {
     return options;
   }
 
-  private getNameOptions(): LabelOptions {
+  private getNameOptions({ fontFamily }: CanvasPrintOptions): LabelOptions {
     const options: LabelOptions = {
       position: new Point(0, 50),
       printOptions: {
         fontSize: 55,
-        fontFamily: 'ubuntu',
+        fontFamily,
         align: 'center',
         color: '#fff',
         background: '#000',
@@ -63,12 +92,12 @@ class Home extends View {
     return options;
   }
 
-  private getDevotionOptions(): LabelOptions {
+  private getDevotionOptions({ fontFamily }: CanvasPrintOptions): LabelOptions {
     const options: LabelOptions = {
       position: new Point(0, 110),
       printOptions: {
         fontSize: 35,
-        fontFamily: 'ubuntu',
+        fontFamily,
         align: 'center',
         color: '#fff',
         background: '#000',
@@ -155,10 +184,11 @@ class Home extends View {
 
   public async drawLogo() {
     try {
-      this.canvas.clear();
+      await this.canvas.clear();
 
-      const nameOptions = this.getNameOptions();
-      const devotionOptions = this.getDevotionOptions();
+      const fontFamily = this.getCurrentFontFamily();
+      const nameOptions = this.getNameOptions({ fontFamily });
+      const devotionOptions = this.getDevotionOptions({ fontFamily });
       const canvasOptions = this.getCanvasOptions();
 
       this.canvas.setWidth(canvasOptions.width);
@@ -197,9 +227,16 @@ class Home extends View {
   public listenScreenResize() {
     const element = document.getElementById('container');
 
-    if (element) {
-      const observer = new ResizeObserver(() => this.drawLogo());
+    if (!element) {
+      return;
+    }
+
+    if (ResizeObserver) {
+      const handler = this.withDebounce(() => { this.drawLogo(); }, 1000);
+      const observer = new ResizeObserver(handler);
       observer.observe(element);
+    } else {
+      this.drawLogo();
     }
   }
 }
