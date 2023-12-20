@@ -8,7 +8,7 @@
     "build": "tsc && vite build --emptyOutDir",
     "lint": "yarn eslint && yarn stylelint",
     "eslint": "eslint src --ext .ts --fix",
-    "stylelint": "stylelint **/*.css --fix",
+    "stylelint": "stylelint **/*.scss --fix",
     "preview": "vite preview"
   },
   "engines": {
@@ -25,9 +25,7 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "postcss-load-config": "^5.0.0",
-    "postcss-nested": "^6.0.1",
-    "postcss-plugin": "^1.0.0",
+    "sass": "^1.69.5",
     "stylelint": "^16.0.1",
     "stylelint-config-standard": "^35.0.0",
     "tsc": "2.0.4",

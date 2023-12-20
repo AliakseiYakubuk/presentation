@@ -30,7 +30,7 @@ class View {
   }
 
   protected isXlScreen() {
-    return !this.isLgScreen() && (document.body.clientWidth > this.breakpoints.md);
+    return !this.isLgScreen() && (document.body.clientWidth <= this.breakpoints.xl);
   }
 
   protected isWidthLessThan(value: number) {

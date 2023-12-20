@@ -14,6 +14,7 @@ export default defineConfig({
     }
   },
   build: {
+    target: "es2015",
     outDir: path.resolve(process.cwd(), "build"),
     sourcemap: false,
     rollupOptions: {

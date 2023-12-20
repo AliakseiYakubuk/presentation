@@ -32,8 +32,11 @@ class Home extends View {
         return;
       }
 
-      fn();
-      setTimeout(() => { isDebounced = false; }, ms);
+      setTimeout(() => {
+        fn();
+        isDebounced = false;
+      }, ms);
+
       isDebounced = true;
     };
   }
@@ -55,9 +58,14 @@ class Home extends View {
       width: document.body.clientWidth,
     };
 
-    if (this.isMdScreen() || this.isSmScreen()) {
+    if (this.isWidthLessThan(this.breakpoints.xl)) {
+      options.height = 135;
+    }
+
+    if (this.isWidthLessThan(this.breakpoints.lg)) {
       options.height = 120;
     }
+
     return options;
   }
 
@@ -65,7 +73,7 @@ class Home extends View {
     const options: LabelOptions = {
       position: new Point(0, 50),
       printOptions: {
-        fontSize: 55,
+        fontSize: 50,
         fontFamily,
         align: 'center',
         color: '#fff',
@@ -79,14 +87,29 @@ class Home extends View {
       },
     };
 
-    if (this.isMdScreen() || this.isSmScreen()) {
+    if (this.isXlScreen()) {
+      options.printOptions.fontSize = 45;
+      options.position = new Point(0, 45);
+    }
+
+    if (this.isLgScreen()) {
       options.printOptions.fontSize = 40;
-      options.position = new Point(0, 40);
+      options.position = new Point(0, 35);
+    }
+
+    if (this.isMdScreen()) {
+      options.printOptions.fontSize = 35;
+      options.position = new Point(0, 30);
+    }
+
+    if (this.isSmScreen()) {
+      options.printOptions.fontSize = 30;
+      options.position = new Point(0, 35);
     }
 
     if (this.isWidthLessThan(350)) {
-      options.printOptions.fontSize = 30;
-      options.position = new Point(0, 40);
+      options.printOptions.fontSize = 25;
+      options.position = new Point(0, 35);
     }
 
     return options;
@@ -94,9 +117,9 @@ class Home extends View {
 
   private getDevotionOptions({ fontFamily }: CanvasPrintOptions): LabelOptions {
     const options: LabelOptions = {
-      position: new Point(0, 110),
+      position: new Point(0, 120),
       printOptions: {
-        fontSize: 35,
+        fontSize: 32,
         fontFamily,
         align: 'center',
         color: '#fff',
@@ -109,14 +132,29 @@ class Home extends View {
       },
     };
 
-    if (this.isSmScreen() || this.isMdScreen()) {
+    if (this.isXlScreen()) {
+      options.printOptions.fontSize = 30;
+      options.position = new Point(0, 105);
+    }
+
+    if (this.isLgScreen()) {
+      options.printOptions.fontSize = 27;
+      options.position = new Point(0, 100);
+    }
+
+    if (this.isMdScreen()) {
       options.printOptions.fontSize = 25;
       options.position = new Point(0, 90);
     }
 
-    if (this.isWidthLessThan(350)) {
+    if (this.isSmScreen()) {
       options.printOptions.fontSize = 20;
-      options.position = new Point(0, 90);
+      options.position = new Point(0, 80);
+    }
+
+    if (this.isWidthLessThan(350)) {
+      options.printOptions.fontSize = 18;
+      options.position = new Point(0, 70);
     }
 
     return options;
@@ -232,7 +270,14 @@ class Home extends View {
     }
 
     if (ResizeObserver) {
-      const handler = this.withDebounce(() => { this.drawLogo(); }, 1000);
+      const handler = this.withDebounce(() => {
+        const canvasOptions = this.getCanvasOptions();
+
+        this.canvas.setWidth(canvasOptions.width);
+        this.canvas.setHeight(canvasOptions.height);
+
+        this.drawLogo();
+      }, 500);
       const observer = new ResizeObserver(handler);
       observer.observe(element);
     } else {
