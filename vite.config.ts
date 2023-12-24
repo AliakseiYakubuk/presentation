@@ -1,6 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-import { createHtmlPlugin } from 'vite-plugin-html'
+import { createHtmlPlugin } from 'vite-plugin-html';
 
 export default defineConfig({
   server: {
@@ -14,7 +14,7 @@ export default defineConfig({
     }
   },
   build: {
-    target: "es2015",
+    target: 'es2015',
     outDir: path.resolve(process.cwd(), "build"),
     sourcemap: false,
     rollupOptions: {

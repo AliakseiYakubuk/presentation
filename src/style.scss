@@ -11,13 +11,14 @@
   text-size-adjust: 100%;
   background-color: black;
 
+
   --sm-breakpoint: 450px;
   --md-breakpoint: 600px;
   --lg-breakpoint: 900px;
   --xl-breakpoint: 1280px;
   --background-height: 120vh;
   --view-spacing: 20vh;
-
+  --fallback-background: #131313;
 }
 
 * {
@@ -320,11 +321,14 @@ body {
     }
   }
 
+
+
   &_image {
     top: calc(-1 * var(--view-spacing) / 2);
     left: 0;
     width: 50%;
     height: calc(100% + var(--view-spacing));
+    background-color: var(--fallback-background);
     background-image: url("./assets/skills-small.webp");
     background-position: left;
     overflow: hidden;
@@ -444,6 +448,7 @@ body {
     left: 50%;
     width: 50%;
     height: calc(100% + var(--view-spacing));
+    background-color: var(--fallback-background);
     background-image: url("./assets/about.webp");
     background-position: left 35% center;
     opacity: 0;

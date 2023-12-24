@@ -1,6 +1,6 @@
 import { View } from '../View';
 
-type SecondaryViewProps = {
+type PresentationProps = {
   viewElementId: string;
   backgroundElementId: string;
   contentElementId: string;
@@ -8,7 +8,7 @@ type SecondaryViewProps = {
   contentActiveClass: string;
 };
 
-class SecondaryView extends View {
+class Presentation extends View {
   private intersectionObserver: IntersectionObserver | null = null;
 
   private viewElement: HTMLElement | null = null;
@@ -52,7 +52,16 @@ class SecondaryView extends View {
     return [0.2, 0.8];
   }
 
-  constructor(options: SecondaryViewProps) {
+  protected async loadImage(url: string) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = url;
+    });
+  }
+
+  constructor(options: PresentationProps) {
     super();
 
     this.viewElement = document.getElementById(options.viewElementId);
@@ -84,4 +93,4 @@ class SecondaryView extends View {
   }
 }
 
-export default SecondaryView;
+export default Presentation;
