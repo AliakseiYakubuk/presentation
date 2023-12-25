@@ -52,15 +52,6 @@ class Presentation extends View {
     return [0.2, 0.8];
   }
 
-  protected async loadImage(url: string) {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.onload = resolve;
-      image.onerror = reject;
-      image.src = url;
-    });
-  }
-
   constructor(options: PresentationProps) {
     super();
 

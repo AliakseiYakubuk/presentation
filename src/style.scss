@@ -4,21 +4,17 @@
   font-weight: 400;
   font-size: 16px;
   color: #fff;
-  font-synthesis: none;
-  text-rendering: optimizelegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
   background-color: black;
 
-
-  --sm-breakpoint: 450px;
-  --md-breakpoint: 600px;
-  --lg-breakpoint: 900px;
-  --xl-breakpoint: 1280px;
   --background-height: 120vh;
   --view-spacing: 20vh;
-  --fallback-background: #131313;
+
+  $breakpoint-sm: 450px;
+  $breakpoint-md: 600px;
+  $breakpoint-lg: 900px;
+  $breakpoint-xl: 1280px;
+  $breakpoint-xxl: 1440px;
 }
 
 * {
@@ -44,7 +40,6 @@ body {
   overflow: auto;
   padding: 0;
   margin: 0;
-  background-color: black;
 }
 
 .container {
@@ -92,7 +87,7 @@ body {
   &_container {
     margin: 0 auto;
     width: 100%;
-    max-width: var(--xl-breakpoint);
+    max-width: 1280px;
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
@@ -282,7 +277,6 @@ body {
 
 .skills {
   position: relative;
-  min-height: 100vh;
   margin-bottom: var(--view-spacing);
 
   &_left {
@@ -321,21 +315,18 @@ body {
     }
   }
 
-
-
   &_image {
     top: calc(-1 * var(--view-spacing) / 2);
     left: 0;
     width: 50%;
     height: calc(100% + var(--view-spacing));
-    background-color: var(--fallback-background);
     background-image: url("./assets/skills-small.webp");
     background-position: left;
     overflow: hidden;
     opacity: 0;
     transition: opacity 1000ms ease-out;
 
-    &_visible {
+    &_visible.ready {
       opacity: 1;
     }
 
@@ -448,16 +439,22 @@ body {
     left: 50%;
     width: 50%;
     height: calc(100% + var(--view-spacing));
-    background-color: var(--fallback-background);
-    background-image: url("./assets/about.webp");
-    background-position: left 35% center;
     opacity: 0;
     transition: opacity 1000ms ease-out;
     overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 
-    &_visible {
+    &_photo {
+      width: auto;
+      height: auto;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      margin-right: -35%;
+    }
+
+    &_visible.ready {
       opacity: 1;
     }
 
@@ -467,7 +464,10 @@ body {
 
     @media (width < 900px) {
       left: 0;
-      background-position: left 40% top;
+
+      &_photo {
+        margin-right: -40%;
+      }
 
       &::before {
         background: linear-gradient(270deg, rgb(0 0 0 / 100%) 0%, rgb(255 255 255 / 0%) 35%);
@@ -478,8 +478,11 @@ body {
       bottom: 0;
       width: 100%;
       height: calc(400px + max(10%, 150px));
-      background-size: 220%;
-      background-position: left 35% top 10%;
+
+      &_photo {
+        margin-right: -55%;
+        margin-bottom: -50%;
+      }
 
       &::before {
         background: linear-gradient(180deg, rgb(0 0 0 / 100%) 1%, rgb(255 255 255 / 0%) 35%);
@@ -490,22 +493,22 @@ body {
       }
     }
 
-    @media (width < 550px) {
-      background-size: 270%;
-    }
-
     @media (width < 450px) {
-      background-size: 350%;
+      &_photo {
+        margin-right: -60%;
+        margin-bottom: -60%;
+      }
     }
 
     @media (width < 350px) {
-      background-size: 450%;
+      &_photo {
+        margin-right: -70%;
+        margin-bottom: -70%;
+      }
     }
 
     @media (width < 250px) {
       height: 90%;
-      background-size: unset;
-      background-position: center;
 
       &::before {
         background: linear-gradient(180deg, rgb(0 0 0 / 100%) 0%, rgb(255 255 255 / 0%) 100%);
@@ -519,6 +522,12 @@ body {
   }
 
   @media (orientation: portrait) {
+    &_image {
+      &_photo {
+        margin-right: -100%;
+      }
+    }
+
     @media (width >=900px) and (height > 2000px) {
       &_left {
         width: 100%;
@@ -556,7 +565,6 @@ body {
       &_image {
         left: 35%;
         width: 65%;
-        background-position: left 37% center;
       }
     }
 
@@ -574,7 +582,12 @@ body {
       &_image {
         width: 100%;
         bottom: unset;
-        top: 20%;
+        top: 10%;
+
+        &_photo {
+          margin-right: -80%;
+          margin-bottom: -20%;
+        }
 
         &::before {
           background: linear-gradient(180deg, rgb(0 0 0 / 100%) 5%, rgb(255 255 255 / 0%) 35%);
@@ -629,18 +642,6 @@ body {
         background-size: 550%;
       }
     }
-  }
-}
-
-.fallback {
-  &.view.ie_hidden {
-    display: none;
-  }
-
-  &.view.ie {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 
