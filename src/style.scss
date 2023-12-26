@@ -450,6 +450,12 @@ body {
       background: linear-gradient(90deg, rgb(0 0 0 / 100%) 0%, rgb(255 255 255 / 0%) 35%);
     }
 
+    @media (width < $breakpoint-xl) {
+      &_photo {
+        margin-right: -90%;
+      }
+    }
+
     @media (width < $breakpoint-lg) {
       left: 0;
 

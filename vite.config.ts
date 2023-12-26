@@ -42,7 +42,6 @@ export default defineConfig({
       apply: 'build',
       enforce: 'post',
       transformIndexHtml: (input, context) => {
-        console.log(context.bundle)
         let html = input;
         const tags: HtmlTagDescriptor[] = [];
         const bundle = context.bundle || {};
