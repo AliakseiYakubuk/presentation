@@ -1,6 +1,6 @@
 import { View } from '../View';
 
-type PresentationProps = {
+type SlideProps = {
   viewElementId: string;
   backgroundElementId: string;
   contentElementId: string;
@@ -8,7 +8,7 @@ type PresentationProps = {
   contentActiveClass: string;
 };
 
-class Presentation extends View {
+class Slide extends View {
   private intersectionObserver: IntersectionObserver | null = null;
 
   private viewElement: HTMLElement | null = null;
@@ -52,7 +52,7 @@ class Presentation extends View {
     return [0.2, 0.8];
   }
 
-  constructor(options: PresentationProps) {
+  constructor(options: SlideProps) {
     super();
 
     this.viewElement = document.getElementById(options.viewElementId);
@@ -86,4 +86,4 @@ class Presentation extends View {
   }
 }
 
-export default Presentation;
+export default Slide;

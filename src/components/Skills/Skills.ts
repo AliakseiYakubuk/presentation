@@ -1,8 +1,8 @@
-import { Presentation } from '../Presentation';
+import { Slide } from '../Slide';
 import smallImage from '../../assets/skills-small.webp';
 import largeImage from '../../assets/skills-large.webp';
 
-class Skills extends Presentation {
+class Skills extends Slide {
   private getBackgroundSource() {
     return this.isWidthLessThan(1440) ? smallImage : largeImage;
   }

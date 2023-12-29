@@ -1,7 +1,7 @@
-import { Presentation } from '../Presentation';
+import { Slide } from '../Slide';
 import photo from '../../assets/about.webp';
 
-class About extends Presentation {
+class About extends Slide {
   private loadImage() {
     const element = document.getElementById('about_image') as HTMLImageElement;
     const img = document.getElementById('photo') as HTMLImageElement;
