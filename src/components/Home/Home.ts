@@ -211,32 +211,33 @@ class Home extends View {
     }
   }
 
-  constructor(canvas: Canvas) {
-    super();
-    this.canvas = canvas;
-    this.freeze();
+  private isFirstVisit() {
+    return !localStorage.getItem(this.visitorKey);
   }
 
-  public freeze() {
-    const element = document.getElementById('container');
-    const isFirstVisitor = !localStorage.getItem(this.visitorKey);
+  private saveVisit() {
+    localStorage.setItem(this.visitorKey, '1');
+  }
 
-    if (element && isFirstVisitor) {
+  private freeze() {
+    const element = document.getElementById('container');
+
+    if (element) {
       window.scrollY = 0;
       element.classList.add('frozen');
     }
   }
 
-  public unfreeze() {
+  private unfreeze() {
     const element = document.getElementById('container');
 
     if (element) {
       element.classList.remove('frozen');
-      localStorage.setItem(this.visitorKey, '1');
+      this.saveVisit();
     }
   }
 
-  public async showContacts() {
+  private async showContacts() {
     const contacts = document.getElementById('contacts');
     const className = 'contacts_visible';
     const animationDuration = 500;
@@ -260,7 +261,7 @@ class Home extends View {
     });
   }
 
-  public async drawLogo() {
+  private async drawLogo() {
     try {
       await this.canvas.clear();
 
@@ -290,6 +291,24 @@ class Home extends View {
     }
   }
 
+  private async startPresentation() {
+    if (this.isFirstVisit()) {
+      this.freeze();
+    }
+
+    await this.drawLogo();
+    await this.showContacts();
+
+    if (this.isFirstVisit()) {
+      this.unfreeze();
+    }
+  }
+
+  constructor(canvas: Canvas) {
+    super();
+    this.canvas = canvas;
+  }
+
   public async listenClickCopyEmail(email: string) {
     const element = document.getElementById('copy_email');
 
@@ -309,21 +328,12 @@ class Home extends View {
     }
 
     if (Observer) {
-      const handler = this.debounce(async () => {
-        const canvasOptions = this.getCanvasOptions();
-
-        this.canvas.setWidth(canvasOptions.width);
-        this.canvas.setHeight(canvasOptions.height);
-
-        await this.drawLogo();
-        await this.showContacts();
-        this.unfreeze();
-      }, 500);
-
+      const handler = this.debounce(() => this.startPresentation(), 500);
       const observer = new Observer(handler);
+
       observer.observe(element);
     } else {
-      this.drawLogo();
+      this.startPresentation();
     }
   }
 }
