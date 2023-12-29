@@ -344,10 +344,6 @@ class Canvas {
     this.context = context as CanvasRenderingContext2D;
   }
 
-  public getChildNodes() {
-    return this.context.canvas.childNodes || [];
-  }
-
   public setWidth(width: number) {
     this.context.canvas.width = width;
   }

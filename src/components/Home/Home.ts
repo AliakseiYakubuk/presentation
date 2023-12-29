@@ -24,7 +24,9 @@ class Home extends View {
 
   private canvas: Canvas;
 
-  private withDebounce<T extends () => void>(fn: T, ms: number) {
+  private visitorKey = 'visited';
+
+  private debounce<T extends () => void>(fn: T, ms: number) {
     let isDebounced: boolean = false;
 
     return () => {
@@ -160,18 +162,12 @@ class Home extends View {
     return options;
   }
 
-  private showContacts() {
-    return new Promise((resolve) => {
-      requestAnimationFrame(() => {
-        const contacts = document.getElementById('contacts');
-        if (contacts) {
-          requestAnimationFrame(() => {
-            contacts.classList.add('contacts_visible');
-            resolve(true);
-          });
-        }
-      });
-    });
+  public unlockScroll() {
+    const element = document.getElementById('container');
+
+    if (element) {
+      element.classList.remove('presentation');
+    }
   }
 
   private hasClipboardAPI() {
@@ -218,6 +214,50 @@ class Home extends View {
   constructor(canvas: Canvas) {
     super();
     this.canvas = canvas;
+    this.freeze();
+  }
+
+  public freeze() {
+    const element = document.getElementById('container');
+    const isFirstVisitor = !localStorage.getItem(this.visitorKey);
+
+    if (element && isFirstVisitor) {
+      window.scrollY = 0;
+      element.classList.add('frozen');
+    }
+  }
+
+  public unfreeze() {
+    const element = document.getElementById('container');
+
+    if (element) {
+      element.classList.remove('frozen');
+      localStorage.setItem(this.visitorKey, '1');
+    }
+  }
+
+  public async showContacts() {
+    const contacts = document.getElementById('contacts');
+    const className = 'contacts_visible';
+    const animationDuration = 500;
+
+    if (contacts?.classList.contains(className)) {
+      return;
+    }
+
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => {
+        if (contacts) {
+          requestAnimationFrame(() => {
+            contacts.classList.add(className);
+            resolve();
+          });
+        }
+      });
+    });
+    await new Promise<void>((resolve) => {
+      setTimeout(() => resolve(), animationDuration);
+    });
   }
 
   public async drawLogo() {
@@ -243,8 +283,6 @@ class Home extends View {
         devotionOptions.position,
         devotionOptions.printOptions,
       );
-
-      await this.showContacts();
     } catch (error) {
       if (error) {
         console.error(error); // eslint-disable-line no-console
@@ -263,22 +301,26 @@ class Home extends View {
   }
 
   public listenScreenResize() {
-    const element = document.getElementById('container');
+    const Observer = this.getResizeObserver();
+    const element = document.getElementById('home_view');
 
     if (!element) {
       return;
     }
 
-    if (ResizeObserver) {
-      const handler = this.withDebounce(() => {
+    if (Observer) {
+      const handler = this.debounce(async () => {
         const canvasOptions = this.getCanvasOptions();
 
         this.canvas.setWidth(canvasOptions.width);
         this.canvas.setHeight(canvasOptions.height);
 
-        this.drawLogo();
+        await this.drawLogo();
+        await this.showContacts();
+        this.unfreeze();
       }, 500);
-      const observer = new ResizeObserver(handler);
+
+      const observer = new Observer(handler);
       observer.observe(element);
     } else {
       this.drawLogo();

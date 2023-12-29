@@ -33,7 +33,7 @@ class Presentation extends View {
     }
   }
 
-  private activateList(value: boolean) {
+  private activateContent(value: boolean) {
     if (!this.contentElement) {
       return;
     }
@@ -63,23 +63,25 @@ class Presentation extends View {
   }
 
   public listenIntersection() {
-    if (this.viewElement) {
+    const Observer = this.getIntersectionObserver();
+
+    if (this.viewElement && Observer) {
       const handlerIntersection = (entries: IntersectionObserverEntry[]) => {
         requestAnimationFrame(() => {
           const isIntersecting = entries?.[0]?.isIntersecting;
           this.activateBackground(isIntersecting);
-          this.activateList(isIntersecting);
+          this.activateContent(isIntersecting);
         });
       };
 
-      this.intersectionObserver = new IntersectionObserver(handlerIntersection, {
+      this.intersectionObserver = new Observer(handlerIntersection, {
         root: null,
         threshold: this.getThreshold(),
       });
       this.intersectionObserver.observe(this.viewElement);
     } else {
       this.activateBackground(true);
-      this.activateList(true);
+      this.activateContent(true);
     }
   }
 }

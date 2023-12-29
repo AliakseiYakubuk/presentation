@@ -36,6 +36,28 @@ class View {
   protected isWidthLessThan(value: number) {
     return document.body.clientWidth < value;
   }
+
+  protected getResizeObserver() {
+    const res = ResizeObserver || null;
+
+    if (!res) {
+      // eslint-disable-next-line no-console
+      console.error(`ResizeObserver is not available. Agent: ${window?.navigator?.userAgent}`);
+    }
+
+    return res;
+  }
+
+  protected getIntersectionObserver() {
+    const res = IntersectionObserver || null;
+
+    if (!res) {
+      // eslint-disable-next-line no-console
+      console.error(`IntersectionObserver is not available. Agent: ${window?.navigator?.userAgent}`);
+    }
+
+    return res;
+  }
 }
 
 export default View;
