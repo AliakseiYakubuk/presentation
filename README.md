@@ -15,19 +15,19 @@
  yarn ts
  ```
 
-## lint project
- ```
- yarn lint
- ```
-
-## lint code
+## check code style
  ```
  yarn eslint
  ```
 
-## lint styles
+## check styles
  ```
  yarn stylelint
+ ```
+
+## run all project checks 
+ ```
+ yarn lint
  ```
 
 ## preview project build
