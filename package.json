@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "build": "tsc && vite build --emptyOutDir",
-    "lint": "yarn eslint && yarn stylelint",
+    "build": "yarn ts && vite build --emptyOutDir",
+    "lint": "yarn ts && yarn eslint && yarn stylelint",
+    "ts": "tsc",
     "eslint": "eslint src --ext .ts --fix",
     "stylelint": "stylelint **/*.scss --fix",
     "preview": "vite preview"
@@ -25,6 +26,7 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.3",
     "postcss": "^8.4.29",
     "sass": "^1.69.5",
     "stylelint": "^16.1.0",
