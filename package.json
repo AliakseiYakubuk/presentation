@@ -1,0 +1,36 @@
+{
+  "name": "cv",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite --host",
+    "build": "tsc && vite build --emptyOutDir",
+    "lint": "yarn eslint && yarn stylelint",
+    "eslint": "eslint src --ext .ts --fix",
+    "stylelint": "stylelint **/*.scss --fix",
+    "preview": "vite preview"
+  },
+  "engines": {
+    "yarn": ">=1.22.4",
+    "node": ">=18.16.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "sass": "^1.69.5",
+    "stylelint": "^16.0.1",
+    "stylelint-config-standard": "^35.0.0",
+    "tsc": "2.0.4",
+    "typescript": "5.0.2",
+    "vite": "4.3.9",
+    "vite-plugin-html": "3.2.0"
+  }
+}
