@@ -4,5 +4,3 @@ yarn-error.log*
 node_modules
 build
 
-.vscode/*
-!.vscode/extensions.json
