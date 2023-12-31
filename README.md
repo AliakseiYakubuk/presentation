@@ -10,6 +10,11 @@
  yarn build
  ```
 
+## check types
+ ```
+ yarn ts
+ ```
+
 ## lint project
  ```
  yarn lint
