@@ -1,2 +1,8 @@
 User-agent: *
 Disallow: /assets/*.webp
+
+User-agent: *
+Disallow: /assets/*.jpg
+
+User-agent: *
+Disallow: /assets/*.ico
