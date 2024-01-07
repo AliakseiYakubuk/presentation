@@ -6,17 +6,34 @@
     <meta name="theme-color" content="#000" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-      content="Aliaksei Yakubuk. Software engineer. Stack: JavaScript, TypeScript, Node JS, React, Apollo Graphql, MongoDB, Elasticsearch, Material UI, Docker and many more. Experience: 5 years">
-    <title>Aliaksei Yakubuk</title>
+      content="%VITE_APP_DESCRIPTION%. I am not afraid of challenges and I am ready to work with something new. And I enjoy working in a team and always appreciate the possibility to learn something from my teammates">
+    <meta name="keywords"
+      content="Yakubuk, Aliaksei Yakubuk, Alexey Yakubuk, Alex Yakubuk, Aleksei Yakubuk, Alexey, Aliaksei. Software Engineer" />
+
+    <title>%VITE_APP_TITLE%</title>
+
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="alternate icon" href="assets/favicon.ico" sizes="any">
     <link rel="stylesheet" href="style.scss" />
+
+    <meta property="og:url" content="https://%VITE_APP_DOMAIN%">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="%VITE_APP_TITLE%">
+    <meta property="og:description" content="%VITE_APP_DESCRIPTION%">
+    <meta property="og:image" content="https://%VITE_APP_DOMAIN%/og-image.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="%VITE_APP_DOMAIN%">
+    <meta property="twitter:url" content="https://%VITE_APP_DOMAIN%">
+    <meta name="twitter:title" content="%VITE_APP_TITLE%">
+    <meta name="twitter:description" content="%VITE_APP_DESCRIPTION%">
+    <meta name="twitter:image" content="https://%VITE_APP_DOMAIN%/og-image.jpg">
   </head>
 
   <body>
     <main id="container" class="container">
       <div id="home_view" class="view home">
-        <h1 style="font-size: 0.01em; color: #000">Aliaksei Yakubuk</h1>
+        <h1 class="header">%VITE_APP_TITLE%</h1>
         <canvas id="logo" class="logo">
         </canvas>
 
@@ -143,7 +160,7 @@
           <section class="view_section about_left">
             <p id="about_content" class="about_content">
               I am calm, communicative and friendly.</br>
-              I enjoy spending time with my family or friends
+              I enjoy spending time with my family and friends
               - these moments often hold significant value for me.</br></br>
               I like traveling. Possibility to visit new places and meet new people from different parts of the world
               allows me to see things from different angles, understand varying viewpoints, and appreciate cultural,
