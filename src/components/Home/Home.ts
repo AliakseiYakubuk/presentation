@@ -24,8 +24,6 @@ class Home extends View {
 
   private canvas: Canvas;
 
-  private visitorKey = 'visited';
-
   private debounce<T extends () => void>(fn: T, ms: number) {
     let isDebounced: boolean = false;
 
@@ -211,32 +209,6 @@ class Home extends View {
     }
   }
 
-  private isFirstVisit() {
-    return !localStorage.getItem(this.visitorKey);
-  }
-
-  private saveVisit() {
-    localStorage.setItem(this.visitorKey, '1');
-  }
-
-  private freeze() {
-    const element = document.getElementById('container');
-
-    if (element) {
-      window.scrollY = 0;
-      element.classList.add('frozen');
-    }
-  }
-
-  private unfreeze() {
-    const element = document.getElementById('container');
-
-    if (element) {
-      element.classList.remove('frozen');
-      this.saveVisit();
-    }
-  }
-
   private async showContacts() {
     const contacts = document.getElementById('contacts');
     const className = 'contacts_visible';
@@ -292,16 +264,8 @@ class Home extends View {
   }
 
   private async startPresentation() {
-    if (this.isFirstVisit()) {
-      this.freeze();
-    }
-
     await this.drawLogo();
     await this.showContacts();
-
-    if (this.isFirstVisit()) {
-      this.unfreeze();
-    }
   }
 
   constructor(canvas: Canvas) {
