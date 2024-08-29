@@ -5,7 +5,7 @@ on:
     - setup-pipeline
 
 jobs:
-  deploy:
+  setup-project:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,10 @@ jobs:
     - name: build
       run: yarn build
 
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
       with:
