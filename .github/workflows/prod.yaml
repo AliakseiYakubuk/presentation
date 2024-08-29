@@ -14,8 +14,8 @@ jobs:
 
     - name: test
       run: |
-        git -v
-        git status
-        git branch --all
+        git checkout test-main
+        git merge setup-pipeline
+        git log -1 --oneline
 
 
