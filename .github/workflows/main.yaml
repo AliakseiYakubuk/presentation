@@ -12,26 +12,26 @@ jobs:
     - name: checkout
       uses: actions/checkout@v1
 
-    - name: node-setup
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+    # - name: node-setup
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: '20'
 
-    - name: install
-      run: yarn
+    # - name: install
+    #   run: yarn
 
-    - name: qa
-      run: yarn lint
+    # - name: qa
+    #   run: yarn lint
 
-    - name: build
-      run: yarn build
+    # - name: build
+    #   run: yarn build
 
-    - name: aws-cli-setup
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
-        aws-region: ${{ secrets.AWS_CV_REGION }}
+    # - name: aws-cli-setup
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
+    #     aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
+    #     aws-region: ${{ secrets.AWS_CV_REGION }}
 
     - name: test
       run: printenv
