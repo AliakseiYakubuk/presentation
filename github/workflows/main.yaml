@@ -1,0 +1,26 @@
+name: deploy:dev
+on:
+  push:
+    branches:
+    - setup-pipeline
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+
+    - name: test
+      run: echo The username is ${{ inputs.username }}
+
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
+    #     aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
+    #     aws-region: us-east-1
+
+    # - name: Deploy static site to S3 bucket
+    #   run: aws s3 sync . s3://dev.aliaksei.yakubuk.com --delete
