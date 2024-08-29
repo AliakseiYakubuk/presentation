@@ -14,8 +14,8 @@ jobs:
 
     - name: test
       run: |
-        git checkout test-main
-        git merge setup-pipeline
+        git checkout origin/test-main
+        git merge origin/setup-pipeline
         git log -1 --oneline
 
 
