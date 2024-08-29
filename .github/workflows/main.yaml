@@ -34,5 +34,5 @@ jobs:
     #     aws-region: ${{ secrets.AWS_CV_REGION }}
 
     - name: test
-      run: echo ${{ env.AWS_CV_DEV_BUCKET_NAME }}
+      run: echo ${{ vars.AWS_CV_DEV_BUCKET_NAME }}
       # run: aws s3 sync . s3://dev.aliaksei.yakubuk.com --delete
