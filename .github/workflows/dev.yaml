@@ -5,7 +5,7 @@ on:
     - setup-pipeline
 
 jobs:
-  setup-project:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +26,6 @@ jobs:
     - name: build
       run: yarn build
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -45,4 +41,5 @@ jobs:
 
     - name: sync
       run: aws s3 sync ./build/  s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/
+
 
