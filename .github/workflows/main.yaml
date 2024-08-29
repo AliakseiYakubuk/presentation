@@ -12,8 +12,15 @@ jobs:
     - name: checkout
       uses: actions/checkout@v1
 
-    - name: test
-      run: echo The username is ${{ inputs.username }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: check-dir
+      run: ls -la
+
+    - name: check-yarn
+      run: yarn -v
 
     # - name: Configure AWS Credentials
     #   uses: aws-actions/configure-aws-credentials@v1
