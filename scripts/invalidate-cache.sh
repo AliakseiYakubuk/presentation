@@ -3,5 +3,6 @@
 ids=$(aws cloudfront list-distributions --query "DistributionList.Items[*].Id" --output text);
 
 for id in $ids; do 
-  echo $id; 
+  echo "Invalidating $id..."
+  aws cloudfront create-invalidation --distribution-id $id --paths "/*" 
 done
