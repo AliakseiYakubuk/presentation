@@ -12,10 +12,14 @@ jobs:
     - name: checkout
       uses: actions/checkout@v1
 
-    - name: test
+    # - name: cleanup
+    #   run: aws s3 rm s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+
+    # - name: copy
+    #   run: aws s3 cp s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+
+    - name: invalidation
       run: |
-        git checkout origin/test-main
-        git merge origin/setup-pipeline
-        git log -1 --oneline
-
-
+      for test in $(aws cloudfront list-distributions --query \"DistributionList.Items[*].Id\" --output text); do
+        echo $test;
+      done
