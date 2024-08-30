@@ -12,6 +12,13 @@ jobs:
     - name: checkout
       uses: actions/checkout@v1
 
+    - name: aws-cli-setup
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
+        aws-region: ${{ secrets.AWS_CV_REGION }}
+
     # - name: cleanup
     #   run: aws s3 rm s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
 
