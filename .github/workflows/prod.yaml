@@ -27,6 +27,6 @@ jobs:
 
     - name: invalidation
       run: |
-        for test in $(aws cloudfront list-distributions --query \"DistributionListItems[*].Id\" --output text); do
+        for test in $(aws cloudfront list-distributions --query "DistributionListItems[*].Id" --output text); do
           echo $test;
         done
