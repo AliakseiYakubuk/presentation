@@ -26,7 +26,6 @@ jobs:
     #   run: aws s3 cp s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
 
     - name: invalidation
-      run: |
-        for test in $(aws cloudfront list-distributions --query "DistributionListItems[*].Id" --output text); do
-          echo $test;
-        done
+      run: yarn invalidate
+
+
