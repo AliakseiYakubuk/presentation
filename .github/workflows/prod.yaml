@@ -1,0 +1,45 @@
+name: deploy:prod
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: choice
+        description: 'Version'
+        required: true
+        default: minor
+        options:
+        - patch
+        - minor
+        - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: aws-cli-setup
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
+        aws-region: ${{ secrets.AWS_CV_REGION }}
+
+    - name: cleanup
+      run: aws s3 rm s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+
+    - name: copy
+      run: aws s3 cp s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+
+    - name: release
+      run: |
+        git config user.name ${{ github.actor }}
+        git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+        yarn version --new-version ${{ inputs.version }}
+        git push https://${{ github.actor }}:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git ${{ github.ref }} --follow-tags
+
+    - name: invalidation
+      run: yarn invalidate

@@ -1,7 +1,7 @@
 {
   "name": "cv",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "start": "vite --host",
@@ -10,7 +10,8 @@
     "ts": "tsc",
     "eslint": "eslint src --ext .ts --fix",
     "stylelint": "stylelint **/*.scss --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "invalidate": "sh ./scripts/invalidate-cache.sh"
   },
   "engines": {
     "yarn": ">=1.22.4",
