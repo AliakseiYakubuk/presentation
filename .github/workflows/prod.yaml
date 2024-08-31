@@ -16,7 +16,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    if: github.ref == 'refs/heads/setup-pipeline'
+    if: github.ref == 'refs/heads/setup-pipeline-2'
     steps:
     - name: checkout
       uses: actions/checkout@v1
