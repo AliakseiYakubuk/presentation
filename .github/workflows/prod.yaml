@@ -1,8 +1,6 @@
 name: deploy:prod
 on:
   workflow_dispatch:
-    branches:
-    - setup-pipeline
     inputs:
       version:
         type: choice
@@ -18,25 +16,26 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    if: github.ref == 'refs/heads/setup-pipeline'
     steps:
     - name: checkout
       uses: actions/checkout@v1
 
-    - name: aws-cli-setup
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
-        aws-region: ${{ secrets.AWS_CV_REGION }}
+    # - name: aws-cli-setup
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
+    #     aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
+    #     aws-region: ${{ secrets.AWS_CV_REGION }}
 
-    - name: cleanup
-      run: aws s3 rm s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+    # - name: cleanup
+    #   run: aws s3 rm s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
 
-    - name: copy
-      run: aws s3 cp s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
+    # - name: copy
+    #   run: aws s3 cp s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ s3://${{ vars.AWS_CV_PROD_BUCKET_NAME }}/ --recursive
 
-    - name: invalidation
-      run: yarn invalidate
+    # - name: invalidation
+    #   run: yarn invalidate
 
     - name: release
       run: yarn version --new-version ${{ inputs.version }}
