@@ -273,6 +273,10 @@ class Home extends View {
     this.canvas = canvas;
   }
 
+  private defineStyleVariable() {
+    document.documentElement.style.setProperty('--heightUnit', `${window.innerHeight * 0.01}px`);
+  }
+
   public async listenClickCopyEmail(email: string) {
     const element = document.getElementById('copy_email');
 
@@ -292,7 +296,10 @@ class Home extends View {
     }
 
     if (Observer) {
-      const handler = this.debounce(() => this.startPresentation(), 500);
+      const handler = this.debounce(() => {
+        this.startPresentation();
+        this.defineStyleVariable();
+      }, 500);
       const observer = new Observer(handler);
 
       observer.observe(element);

@@ -2,13 +2,10 @@ $breakpoint-sm: 450px;
 $breakpoint-md: 600px;
 $breakpoint-lg: 900px;
 $breakpoint-xl: 1280px;
-$breakpoint-xxl: 1440px;
-$view-spacing: 20vh;
 $white: #fff;
 $black: #000;
 $grey: #a3a2a2;
 $darkgrey: #5a5a5a;
-$transparent: #ffffff00;
 
 :root {
   font-family: monospace, Arial, sans-serif;
@@ -27,7 +24,6 @@ $transparent: #ffffff00;
 body {
   width: 100%;
   height: 100%;
-  min-height: 100vh;
   overflow: hidden scroll;
   padding: 0;
   margin: 0;
@@ -91,10 +87,15 @@ body {
   }
 }
 
-.view {
-  width: 100%;
+@mixin fallback-min-height {
   min-height: 100vh;
-  display: flex;
+}
+
+.view {
+  @include fallback-min-height;
+
+  width: 100%;
+  min-height: calc(var(--heightUnit, 1vh) * 100);
   font-size: 1.2em;
 
   @media (width < $breakpoint-xl) {
@@ -123,7 +124,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: $view-spacing;
 
   .logo {
     margin: 0 auto;
@@ -293,404 +293,6 @@ body {
 
       &.linkedin {
         order: -1;
-      }
-    }
-  }
-}
-
-.skills {
-  position: relative;
-  margin-bottom: $view-spacing;
-
-  &_left {
-    @media (width < $breakpoint-lg) {
-      display: none;
-    }
-  }
-
-  &_right {
-    @media (width < $breakpoint-lg) {
-      justify-content: start;
-      width: 100%;
-    }
-  }
-
-  &_list {
-    margin: 0;
-    padding: 24px 24px 24px 40px;
-    transform: translateX(50px);
-    opacity: 0;
-    transition:
-      opacity 500ms ease-out,
-      transform 500ms ease-out;
-
-    &_visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    &_item {
-      padding-bottom: 16px;
-
-      @media (width < 900px) {
-        padding-bottom: 8px;
-      }
-
-      & ul {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        font-size: 0.75em;
-        padding: 0;
-
-
-        & li {
-          padding: 0 8px 0 0;
-        }
-
-        & .link {
-          color: $grey;
-          transition: color 200ms;
-
-          &:hover {
-            color: $white;
-          }
-        }
-      }
-    }
-  }
-
-  &_image {
-    top: calc(-1 * $view-spacing / 2);
-    left: 0;
-    width: 50%;
-    height: calc(100% + $view-spacing);
-    background-image: url("./assets/skills-small.webp");
-    background-position: left;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 1000ms ease-out;
-
-    &_visible.ready {
-      opacity: 1;
-    }
-
-    &::before {
-      background: linear-gradient(90deg, $transparent 0%, $black 100%);
-    }
-
-    @media (width > $breakpoint-xxl) {
-      background-image: url("./assets/skills-large.webp");
-    }
-
-    @media (width < $breakpoint-lg) {
-      left: 0;
-      width: 100%;
-
-      &::before {
-        background: linear-gradient(270deg, $transparent 0%, $black 65%, $black 100%);
-      }
-    }
-
-    @media (width < $breakpoint-md) {
-      left: 0;
-      width: 100%;
-    }
-  }
-
-  @media (orientation: portrait) {
-    @media (width < 900px) {
-      &_list {
-        &_item {
-          padding-bottom: 16px;
-        }
-      }
-
-      &_image {
-        &::before {
-          background: linear-gradient(180deg, $black 0%, $transparent 100%);
-        }
-
-        &::after {
-          background: linear-gradient(0deg, $black 0%, $transparent 40%);
-        }
-      }
-    }
-
-    @media (width < $breakpoint-md) {
-      &_image {
-        &::before {
-          background: radial-gradient(circle at 3% 0%,
-              $black 0%,
-              $black 33%,
-              $transparent 100%);
-        }
-
-        &::after {
-          background: linear-gradient(345deg, $black 9%, $transparent 35%);
-        }
-      }
-    }
-  }
-}
-
-.about {
-  position: relative;
-
-  &_left {
-    @media (width < $breakpoint-lg) {
-      justify-content: flex-end;
-    }
-
-    @media (width < $breakpoint-md) {
-      width: 100%;
-      align-items: flex-start;
-      padding-bottom: 400px;
-    }
-
-    @media (width < 250px) {
-      padding-bottom: 0;
-    }
-  }
-
-  &_right {
-    @media (width < 900px) {
-      order: -1;
-    }
-
-    @media (width < $breakpoint-md) {
-      display: none;
-    }
-  }
-
-  &_content {
-    text-align: right;
-    padding: 24px;
-    margin: 0;
-    opacity: 0;
-    transform: translateX(-50px);
-    transition:
-      opacity 500ms ease-out,
-      transform 500ms ease-out;
-
-    &_visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  &_image {
-    bottom: -10vh;
-    left: 50%;
-    width: 50%;
-    height: calc(100% + $view-spacing);
-    opacity: 0;
-    transition: opacity 1000ms ease-out;
-    overflow: hidden;
-    display: flex;
-    justify-content: flex-start;
-
-    &_photo {
-      width: auto;
-      height: auto;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      margin-right: -35%;
-    }
-
-    &_visible.ready {
-      opacity: 1;
-    }
-
-    &::before {
-      background: linear-gradient(90deg, $black 0%, $transparent 35%);
-    }
-
-    @media (width < $breakpoint-xl) {
-      &_photo {
-        margin-right: -90%;
-      }
-    }
-
-    @media (width < $breakpoint-lg) {
-      left: 0;
-
-      &_photo {
-        margin-right: -40%;
-      }
-
-      &::before {
-        background: linear-gradient(270deg, $black 0%, $transparent 35%);
-      }
-    }
-
-    @media (width < $breakpoint-md) {
-      bottom: 0;
-      width: 100%;
-      height: calc(400px + max(10%, 150px));
-
-      &_photo {
-        margin-right: -55%;
-        margin-bottom: -50%;
-      }
-
-      &::before {
-        background: linear-gradient(180deg, $black 1%, $transparent 35%);
-      }
-
-      &::after {
-        background: linear-gradient(0deg, $black 0%, $transparent 7%);
-      }
-    }
-
-    @media (width < $breakpoint-sm) {
-      &_photo {
-        margin-right: -60%;
-        margin-bottom: -60%;
-      }
-    }
-
-    @media (width < 350px) {
-      &_photo {
-        margin-right: -70%;
-        margin-bottom: -70%;
-      }
-    }
-
-    @media (width < 250px) {
-      height: 90%;
-
-      &::before {
-        background: linear-gradient(180deg, $black 0%, $transparent 100%);
-      }
-
-      &::after {
-        backdrop-filter: blur(15px);
-        background: none;
-      }
-    }
-  }
-
-  @media (orientation: portrait) {
-    &_image {
-      &_photo {
-        margin-right: -100%;
-      }
-    }
-
-    @media (width >=$breakpoint-lg) and (height > 2000px) {
-      &_left {
-        width: 100%;
-      }
-
-      &_right {
-        display: none;
-      }
-
-      &_content {
-        text-align: center;
-      }
-
-      &_image {
-        &::before {
-          backdrop-filter: blur(50px);
-          background: none;
-        }
-
-        &::after {
-          background: linear-gradient(90deg, $black 0%, $transparent 100%);
-        }
-      }
-    }
-
-    @media (width >=$breakpoint-lg) and (width < 1280px) {
-      &_left {
-        width: 35%;
-      }
-
-      &_right {
-        width: 65%;
-      }
-
-      &_image {
-        left: 35%;
-        width: 65%;
-      }
-    }
-
-    @media (width >=$breakpoint-md) and (width < $breakpoint-lg) {
-      &_left {
-        width: 100%;
-        align-items: flex-start;
-        padding-bottom: 60%;
-      }
-
-      &_right {
-        display: none;
-      }
-
-      &_image {
-        width: 100%;
-        bottom: unset;
-        top: 10%;
-
-        &_photo {
-          margin-right: -80%;
-          margin-bottom: -20%;
-        }
-
-        &::before {
-          background: linear-gradient(180deg, $black 5%, $transparent 35%);
-        }
-      }
-
-      @media (height > $breakpoint-xl) {
-        padding-top: 64px;
-      }
-
-      @media (height > 3000px) {
-        &_image {
-          &::before {
-            backdrop-filter: blur(50px);
-            background: none;
-          }
-
-          &::after {
-            background: linear-gradient(180deg, $black 0%, $transparent 100%);
-          }
-        }
-      }
-    }
-
-    @media (width < $breakpoint-md) {
-      &_image {
-        background-position: left 40% top;
-        background-size: 250%;
-      }
-    }
-
-    @media (width < 500px) {
-      &_image {
-        background-size: 300%;
-      }
-    }
-
-    @media (width < $breakpoint-sm) {
-      &_image {
-        background-size: 350%;
-      }
-    }
-
-    @media (width < 350px) {
-      &_image {
-        background-size: 500%;
-      }
-    }
-
-    @media (width < 300px) {
-      &_image {
-        background-size: 550%;
       }
     }
   }
