@@ -274,7 +274,7 @@ class Home extends View {
   }
 
   private defineStyleVariable() {
-    document.documentElement.style.setProperty('--heightUnit', `${window.innerHeight * 0.01}px`);
+    document.documentElement?.style?.setProperty('--heightUnit', `${window.innerHeight * 0.01}px`);
   }
 
   public async listenClickCopyEmail(email: string) {
