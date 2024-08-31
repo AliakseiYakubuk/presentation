@@ -1,5 +1,10 @@
 # Self-presentation Page
 
+## environments
+
+- [development](http://dev.aliaksei.yakubuk.com.s3-website-us-east-1.amazonaws.com/)  - restricted access
+- [production](https://dev.aliaksei.yakubuk.com/)
+
 ## start project
  ```
  yarn start
