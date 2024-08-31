@@ -25,6 +25,10 @@ jobs:
 
     - name: build
       run: yarn build
+      env:
+        VITE_APP_DESCRIPTION: ${{ vars.VITE_APP_DESCRIPTION }}
+        VITE_APP_DOMAIN: ${{ vars.VITE_APP_DOMAIN }}
+        VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
 
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
