@@ -3,7 +3,7 @@
 ## environments
 
 - [development](http://dev.aliaksei.yakubuk.com.s3-website-us-east-1.amazonaws.com/)  - restricted access
-- [production](https://dev.aliaksei.yakubuk.com/)
+- [production](https://www.aliaksei.yakubuk.com/)
 
 ## start project
  ```
