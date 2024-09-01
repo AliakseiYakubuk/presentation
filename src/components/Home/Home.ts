@@ -1,6 +1,16 @@
 import { Canvas, PrintOptions } from '../Canvas';
 import { Point } from '../Point';
 import { View } from '../View';
+import {
+  CONTACTS_ID,
+  CONTACTS_VISIBLE_CLASS,
+  CONTAINER_ID,
+  COPY_EMAIL_BUTTON_ACTIVE_CLASS,
+  COPY_EMAIL_BUTTON_ID,
+  HEIGHT_VARIABLE,
+  HOME_VIEW,
+  OPEN_EMAIL_BUTTON_ID,
+} from './Home.const';
 
 type CanvasPrintOptions = {
   fontFamily: string;
@@ -42,7 +52,7 @@ class Home extends View {
   }
 
   private getCurrentFontFamily() {
-    const element = document.getElementById('container');
+    const element = document.getElementById(CONTAINER_ID);
     const defaultFontFamily = 'monospace';
 
     if (element) {
@@ -160,14 +170,6 @@ class Home extends View {
     return options;
   }
 
-  public unlockScroll() {
-    const element = document.getElementById('container');
-
-    if (element) {
-      element.classList.remove('presentation');
-    }
-  }
-
   private hasClipboardAPI() {
     return Boolean(navigator.clipboard);
   }
@@ -182,15 +184,14 @@ class Home extends View {
   }
 
   private async copySuccessMessage() {
-    const element = document.getElementById('copy_email');
-    const className = 'copy_email_active';
+    const element = document.getElementById(COPY_EMAIL_BUTTON_ID);
 
     if (element) {
-      element.classList.add(className);
+      element.classList.add(COPY_EMAIL_BUTTON_ACTIVE_CLASS);
 
       await new Promise<void>((resolve) => {
         setTimeout(() => {
-          element.classList.remove(className);
+          element.classList.remove(COPY_EMAIL_BUTTON_ACTIVE_CLASS);
           resolve();
         }, 3000);
       });
@@ -198,8 +199,8 @@ class Home extends View {
   }
 
   private showOpenEmailContact() {
-    const openEmail = document.getElementById('open_email');
-    const copyEmail = document.getElementById('copy_email');
+    const openEmail = document.getElementById(OPEN_EMAIL_BUTTON_ID);
+    const copyEmail = document.getElementById(COPY_EMAIL_BUTTON_ID);
 
     if (openEmail) {
       openEmail.style.display = 'flex';
@@ -210,11 +211,10 @@ class Home extends View {
   }
 
   private async showContacts() {
-    const contacts = document.getElementById('contacts');
-    const className = 'contacts_visible';
+    const contacts = document.getElementById(CONTACTS_ID);
     const animationDuration = 500;
 
-    if (contacts?.classList.contains(className)) {
+    if (contacts?.classList.contains(CONTACTS_VISIBLE_CLASS)) {
       return;
     }
 
@@ -222,7 +222,7 @@ class Home extends View {
       requestAnimationFrame(() => {
         if (contacts) {
           requestAnimationFrame(() => {
-            contacts.classList.add(className);
+            contacts.classList.add(CONTACTS_VISIBLE_CLASS);
             resolve();
           });
         }
@@ -268,17 +268,35 @@ class Home extends View {
     await this.showContacts();
   }
 
+  private getNextHeightVariable() {
+    return `${window.innerHeight * 0.01}px`;
+  }
+
+  private getHeightVariable() {
+    return document.documentElement?.style?.getPropertyValue(HEIGHT_VARIABLE);
+  }
+
+  private setHeightVariable(value: string) {
+    document.documentElement?.style?.setProperty(HEIGHT_VARIABLE, value);
+  }
+
+  private isHeightVariableUpdated() {
+    return this.getHeightVariable() !== this.getNextHeightVariable();
+  }
+
   constructor(canvas: Canvas) {
     super();
     this.canvas = canvas;
   }
 
-  private defineStyleVariable() {
-    document.documentElement?.style?.setProperty('--heightUnit', `${window.innerHeight * 0.01}px`);
+  public defineHeightVariable() {
+    if (!this.getHeightVariable()) {
+      this.setHeightVariable(this.getNextHeightVariable());
+    }
   }
 
   public async listenClickCopyEmail(email: string) {
-    const element = document.getElementById('copy_email');
+    const element = document.getElementById(COPY_EMAIL_BUTTON_ID);
 
     if (this.hasClipboardAPI() && element) {
       element.addEventListener('click', () => this.copyToClipboard(email));
@@ -289,18 +307,20 @@ class Home extends View {
 
   public listenScreenResize() {
     const Observer = this.getResizeObserver();
-    const element = document.getElementById('home_view');
+    const element = document.getElementById(HOME_VIEW);
 
     if (!element) {
       return;
     }
 
     if (Observer) {
-      const handler = this.debounce(() => {
-        this.startPresentation();
-        this.defineStyleVariable();
-      }, 500);
-      const observer = new Observer(handler);
+      const observer = new Observer(this.debounce(() => {
+        if (this.isHeightVariableUpdated()) {
+          this.setHeightVariable(this.getNextHeightVariable());
+        } else {
+          this.startPresentation();
+        }
+      }, 250));
 
       observer.observe(element);
     } else {
