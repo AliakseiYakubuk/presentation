@@ -27,7 +27,8 @@ jobs:
       run: yarn build
       env:
         VITE_APP_DESCRIPTION: ${{ vars.VITE_APP_DESCRIPTION }}
-        VITE_APP_DOMAIN: ${{ vars.VITE_APP_DOMAIN }}
+        VITE_APP_MAIN_DOMAIN: ${{ vars.VITE_APP_MAIN_DOMAIN }}
+        VITE_APP_DOMAINS: ${{ vars.VITE_APP_DOMAINS }}
         VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
 
     - name: aws-cli-setup

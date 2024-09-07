@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "build": "yarn ts && vite build --emptyOutDir",
+    "build": "yarn sitemap \"$VITE_APP_DOMAINS\" && yarn ts && vite build --emptyOutDir",
     "lint": "yarn ts && yarn eslint && yarn stylelint",
     "ts": "tsc",
     "eslint": "eslint src --ext .ts --fix",
     "stylelint": "stylelint **/*.scss --fix",
     "preview": "vite preview",
-    "invalidate": "sh ./scripts/invalidate-cache.sh"
+    "invalidate": "sh ./scripts/invalidate-cache.sh",
+    "sitemap": "sh ./scripts/generate-sitemap.sh"
   },
   "engines": {
     "yarn": ">=1.22.4",

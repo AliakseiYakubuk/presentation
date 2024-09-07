@@ -1,3 +1,5 @@
+Sitemap: https://www.aliaksei.yakubuk.com/sitemap.xml
+
 User-agent: *
 Disallow: /assets/*.webp
 
