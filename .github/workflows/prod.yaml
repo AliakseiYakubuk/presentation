@@ -14,7 +14,7 @@ on:
 
 jobs:
 
-  deploy-aliaksei-yakubuk:
+  aliaksei-yakubuk:
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
@@ -27,8 +27,8 @@ jobs:
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
-  deploy-yakubuk:
-    needs: deploy-aliaksei-yakubuk
+  yakubuk:
+    needs: aliaksei-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: ${{ vars.YAKUBUK_DOMAIN }}
@@ -40,8 +40,8 @@ jobs:
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
-  deploy-alexey-yakubuk:
-    needs: deploy-yakubuk
+  alexey-yakubuk:
+    needs: yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: ${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
@@ -53,8 +53,8 @@ jobs:
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
-  deploy-alex-yakubuk:
-    needs: deploy-alexey-yakubuk
+  alex-yakubuk:
+    needs: alexey-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: ${{ vars.ALEX_YAKUBUK_DOMAIN }}
@@ -66,8 +66,8 @@ jobs:
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
-  deploy-lexa-yakubuk:
-    needs: deploy-alex-yakubuk
+  lexa-yakubuk:
+    needs: alex-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: ${{ vars.LEXA_YAKUBUK_DOMAIN }}
@@ -80,7 +80,7 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   release:
-    needs: [deploy-aliaksei-yakubuk, deploy-yakubuk, deploy-alexey-yakubuk, deploy-alex-yakubuk, deploy-lexa-yakubuk]
+    needs: [aliaksei-yakubuk, yakubuk, alexey-yakubuk, alex-yakubuk, lexa-yakubuk]
     runs-on: ubuntu-latest
     steps:
     - name: checkout
