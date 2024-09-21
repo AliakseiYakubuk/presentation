@@ -1,0 +1,66 @@
+name: deploy:bucket 
+
+on:
+  workflow_call:
+    inputs:
+      domain:
+        required: true
+        type: string
+      domains:
+        required: true
+        type: string
+      title:
+        required: true
+        type: string
+      description:
+        required: true
+        type: string
+    secrets:
+      awsAccessKeyId:
+        required: true
+      awsSecretAccessKey:
+        required: true
+      awsRegion:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: node-setup
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: install
+      run: yarn
+
+    - name: qa
+      run: yarn lint
+
+    - name: build
+      run: yarn build
+      env:
+        VITE_APP_MAIN_DOMAIN: ${{ inputs.domain }}
+        VITE_APP_DOMAINS: ${{ inputs.domains }}
+        VITE_APP_TITLE: ${{ inputs.title }}
+        VITE_APP_DESCRIPTION: ${{ inputs.description }}
+
+    - name: aws-cli-setup
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.awsAccessKeyId }}
+        aws-secret-access-key: ${{ secrets.awsSecretAccessKey }}
+        aws-region: ${{ secrets.awsRegion }}
+
+    - name: cleanup
+      run: aws s3 rm s3://${{ inputs.domain }}/ --recursive
+
+    - name: sync
+      run: aws s3 sync ./build/  s3://${{ inputs.domain }}/
+
+
