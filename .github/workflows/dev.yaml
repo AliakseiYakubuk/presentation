@@ -14,6 +14,7 @@ jobs:
       run: echo "branch check is done"
 
   deploy:
+    if: github.ref == 'refs/heads/separate-deployments'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
