@@ -14,11 +14,11 @@ on:
 
 jobs:
 
-  deploy-yakubuk:
+  deploy-aliaksei-yakubuk:
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.YAKUBUK_DOMAIN }}
+      domain: ${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
@@ -27,11 +27,11 @@ jobs:
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
-  deploy-aliaksei-yakubuk:
-    if: github.ref == 'refs/heads/master'
+  deploy-yakubuk:
+    needs: deploy-aliaksei-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
+      domain: ${{ vars.YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
@@ -41,10 +41,10 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-alexey-yakubuk:
-    if: github.ref == 'refs/heads/master'
+    needs: deploy-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
+      domain: ${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
@@ -54,10 +54,10 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-alex-yakubuk:
-    if: github.ref == 'refs/heads/master'
+    needs: deploy-alexey-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.ALEX_YAKUBUK_DOMAIN }}
+      domain: ${{ vars.ALEX_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
@@ -67,10 +67,10 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-lexa-yakubuk:
-    if: github.ref == 'refs/heads/master'
+    needs: deploy-alex-yakubuk
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.LEXA_YAKUBUK_DOMAIN }}
+      domain: ${{ vars.LEXA_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
@@ -80,8 +80,8 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   release:
+    needs: [deploy-aliaksei-yakubuk, deploy-yakubuk, deploy-alexey-yakubuk, deploy-alex-yakubuk, deploy-lexa-yakubuk]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
     - name: checkout
       uses: actions/checkout@v3
@@ -94,9 +94,12 @@ jobs:
         git push https://${{ github.actor }}:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git ${{ github.ref }} --follow-tags
 
   invalidation:
+    needs: release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
       with:
