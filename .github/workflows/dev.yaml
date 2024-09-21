@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    uses: ./.github/actions/deploy.yaml
+    uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
