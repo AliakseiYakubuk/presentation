@@ -14,15 +14,8 @@ on:
 
 jobs:
 
-  check-branch:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-    - name: branch
-      run: echo "branch check is done"
-
-
   deploy-yakubuk:
+    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.YAKUBUK_DOMAIN }}
@@ -35,6 +28,7 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-aliaksei-yakubuk:
+    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
@@ -47,6 +41,7 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-alexey-yakubuk:
+    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
@@ -59,6 +54,7 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-alex-yakubuk:
+    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALEX_YAKUBUK_DOMAIN }}
@@ -71,6 +67,7 @@ jobs:
       awsRegion: ${{ secrets.AWS_CV_REGION }}
 
   deploy-lexa-yakubuk:
+    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.LEXA_YAKUBUK_DOMAIN }}
@@ -84,6 +81,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
     - name: checkout
       uses: actions/checkout@v3
@@ -97,6 +95,7 @@ jobs:
 
   invalidation:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1

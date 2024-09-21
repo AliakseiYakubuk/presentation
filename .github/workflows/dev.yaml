@@ -3,18 +3,11 @@ name: deploy:dev
 on:
   push:
     branches:
-    - separate-deployments
+    - master
 
 jobs:
-  check-branch:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-    - name: branch
-      run: echo "branch check is done"
 
   deploy:
-    if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
       domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
