@@ -1,47 +1,20 @@
 name: deploy:dev
+
 on:
   push:
     branches:
     - master
 
 jobs:
+
   deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: checkout
-      uses: actions/checkout@v3
-
-    - name: node-setup
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    - name: install
-      run: yarn
-
-    - name: qa
-      run: yarn lint
-
-    - name: build
-      run: yarn build
-      env:
-        VITE_APP_DESCRIPTION: ${{ vars.VITE_APP_DESCRIPTION }}
-        VITE_APP_MAIN_DOMAIN: ${{ vars.VITE_APP_MAIN_DOMAIN }}
-        VITE_APP_DOMAINS: ${{ vars.VITE_APP_DOMAINS }}
-        VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
-
-    - name: aws-cli-setup
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_CV_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_CV_SECRET_KEY }}
-        aws-region: ${{ secrets.AWS_CV_REGION }}
-
-    - name: cleanup
-      run: aws s3 rm s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/ --recursive
-
-    - name: sync
-      run: aws s3 sync ./build/  s3://${{ vars.AWS_CV_DEV_BUCKET_NAME }}/
-
-
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      domain: dev.${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
+      domains: ${{ vars.DOMAINS }}
+      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
+    secrets:
+      awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
+      awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
+      awsRegion: ${{ secrets.AWS_CV_REGION }}
