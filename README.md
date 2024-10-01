@@ -1,9 +1,10 @@
-# Self-presentation Page
+# My Page
 
-## environments
-
-- [development](http://dev.aliaksei.yakubuk.com.s3-website-us-east-1.amazonaws.com/)  - restricted access
-- [production](https://www.aliaksei.yakubuk.com/)
+- [aliaksei.yakubuk.com](https://aliaksei.yakubuk.com/)
+- [alexey.yakubuk.com](https://alexey.yakubuk.com/)
+- [alex.yakubuk.com](https://alex.yakubuk.com/)
+- [lexa.yakubuk.com](https://lexa.yakubuk.com/)
+- [yakubuk.com](https://yakubuk.com/)
 
 ## start project
  ```
@@ -40,4 +41,3 @@
  yarn build
  yarn preview
 ```
-
