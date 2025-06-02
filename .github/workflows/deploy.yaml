@@ -15,6 +15,9 @@ on:
       description:
         required: true
         type: string
+      type:
+        required: true
+        type: string
     secrets:
       awsAccessKeyId:
         required: true
@@ -48,6 +51,7 @@ jobs:
         VITE_APP_DOMAINS: ${{ inputs.domains }}
         VITE_APP_TITLE: ${{ inputs.title }}
         VITE_APP_DESCRIPTION: ${{ inputs.description }}
+        VITE_PAGE_TYPE: ${{ inputs.type }}
 
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1

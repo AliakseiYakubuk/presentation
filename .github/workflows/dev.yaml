@@ -14,6 +14,7 @@ jobs:
       domains: ${{ vars.DOMAINS }}
       title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
+      type: canonical
     secrets:
       awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
