@@ -18,15 +18,14 @@ on:
       type:
         required: true
         type: string
-      gaTag:
-        required: true
-        type: string
     secrets:
       awsAccessKeyId:
         required: true
       awsSecretAccessKey:
         required: true
       awsRegion:
+        required: true
+      gaTag:
         required: true
 
 jobs:
@@ -55,7 +54,8 @@ jobs:
         VITE_APP_TITLE: ${{ inputs.title }}
         VITE_APP_DESCRIPTION: ${{ inputs.description }}
         VITE_PAGE_TYPE: ${{ inputs.type }}
-        VITE_GA_TAG: ${{ inputs.gaTag }}
+      with:
+        VITE_GA_TAG: ${{ secrets.gaTag }}
 
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
