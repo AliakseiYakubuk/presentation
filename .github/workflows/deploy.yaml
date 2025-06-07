@@ -54,7 +54,6 @@ jobs:
         VITE_APP_TITLE: ${{ inputs.title }}
         VITE_APP_DESCRIPTION: ${{ inputs.description }}
         VITE_PAGE_TYPE: ${{ inputs.type }}
-      with:
         VITE_GA_TAG: ${{ secrets.gaTag }}
 
     - name: aws-cli-setup
