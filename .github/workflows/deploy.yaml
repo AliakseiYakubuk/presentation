@@ -18,6 +18,9 @@ on:
       type:
         required: true
         type: string
+      gaTag:
+        required: true
+        type: string
     secrets:
       awsAccessKeyId:
         required: true
@@ -52,6 +55,7 @@ jobs:
         VITE_APP_TITLE: ${{ inputs.title }}
         VITE_APP_DESCRIPTION: ${{ inputs.description }}
         VITE_PAGE_TYPE: ${{ inputs.type }}
+        VITE_GA_TAG: ${{ inputs.gaTag }}
 
     - name: aws-cli-setup
       uses: aws-actions/configure-aws-credentials@v1
