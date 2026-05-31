@@ -1,3 +1,4 @@
+import { test } from "./animate";
 import { Home } from "./components/Home";
 
 const app = async () => {
@@ -8,5 +9,7 @@ const app = async () => {
 
 	home.listenScreenResize();
 };
+
+// test();
 
 app();

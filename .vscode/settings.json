@@ -1,11 +1,5 @@
 {
-	"eslint.validate": ["typescript"],
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "explicit"
-	},
 	"html.format.indentInnerHtml": true,
-	"editor.defaultFormatter": "dbaeumer.vscode-eslint",
-	"eslint.format.enable": true,
 	"editor.formatOnSave": true,
 	"[scss]": {
 		"editor.defaultFormatter": "vscode.css-language-features"
@@ -14,5 +8,6 @@
 	"scss.lint.important": "error",
 	"scss.lint.duplicateProperties": "error",
 	"scss.lint.idSelector": "error",
-	"scss.lint.unknownProperties": "error"
+	"scss.lint.unknownProperties": "error",
+	"editor.defaultFormatter": "biomejs.biome"
 }

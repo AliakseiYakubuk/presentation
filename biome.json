@@ -150,7 +150,7 @@
 				"useExportsLast": "off",
 				"useGroupedAccessorPairs": "error",
 				"useObjectSpread": "error",
-				"useShorthandAssign": "error",
+				"useShorthandAssign": "off",
 				"useSingleVarDeclarator": "error",
 				"useSymbolDescription": "error",
 				"useTemplate": "error"
