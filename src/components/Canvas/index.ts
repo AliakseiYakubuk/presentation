@@ -1,2 +1,1 @@
-export { default as Canvas } from './Canvas';
-export { type PrintOptions } from './Canvas';
+export { default as Canvas, type PrintOptions } from "./Canvas";

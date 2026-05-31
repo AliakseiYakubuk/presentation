@@ -1,42 +1,32 @@
 {
-  "name": "cv",
-  "private": true,
-  "version": "2.6.5",
-  "type": "module",
-  "scripts": {
-    "start": "vite --host",
-    "build": "yarn sitemap \"$VITE_APP_DOMAINS\" && yarn ts && vite build --emptyOutDir",
-    "lint": "yarn ts && yarn eslint && yarn stylelint",
-    "ts": "tsc",
-    "eslint": "eslint src --ext .ts --fix",
-    "stylelint": "stylelint **/*.scss --fix",
-    "preview": "vite preview",
-    "invalidate": "sh ./scripts/invalidate-cache.sh",
-    "sitemap": "sh ./scripts/generate-sitemap.sh"
-  },
-  "engines": {
-    "yarn": ">=1.22.4",
-    "node": ">=18.16.1"
-  },
-  "devDependencies": {
-    "@types/node": "20.3.2",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "husky": "^8.0.3",
-    "postcss": "^8.4.29",
-    "sass": "^1.69.5",
-    "stylelint": "^16.1.0",
-    "stylelint-config-recommended-scss": "^14.0.0",
-    "tsc": "2.0.4",
-    "typescript": "5.0.2",
-    "vite": "4.3.9",
-    "vite-plugin-html": "3.2.0",
-    "vite-plugin-static-copy": "^1.0.0"
-  }
+	"name": "cv",
+	"private": true,
+	"version": "2.6.5",
+	"type": "module",
+	"scripts": {
+		"start": "vite --host",
+		"build": "yarn sitemap \"$VITE_APP_DOMAINS\" && yarn ts && vite build --emptyOutDir",
+		"lint": "yarn ts && yarn biome",
+		"ts": "tsc",
+		"biome": "biome check --write",
+		"preview": "vite preview",
+		"invalidate": "sh ./scripts/invalidate-cache.sh",
+		"sitemap": "sh ./scripts/generate-sitemap.sh"
+	},
+	"engines": {
+		"yarn": ">=1.22.4",
+		"node": ">=24.6.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.16",
+		"@types/node": "25.9.1",
+		"husky": "9.1.7",
+		"postcss": "8.5.15",
+		"sass": "1.100.0",
+		"tsc": "2.0.4",
+		"typescript": "6.0.3",
+		"vite": "6.4.2",
+		"vite-plugin-html": "3.2.2",
+		"vite-plugin-static-copy": "4.1.0"
+	}
 }

@@ -33,7 +33,8 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TAG%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
+      // biome-ignore lint/complexity/noArguments: 3rd party code
+      function gtag() { dataLayer.push(arguments); } 
       gtag('js', new Date());
 
       gtag('config', '%VITE_GA_TAG%');
