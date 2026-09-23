@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="mountain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d0d21"/>
+      <stop offset="100%" stop-color="#080810"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Transparent background -->
+  <path
+    d="M0 395
+       C128 365 256 342 384 334
+       C490 327 590 336 704 354
+       C820 373 925 392 1024 390
+       C1145 388 1250 363 1360 324
+       C1430 299 1490 280 1536 264
+       L1536 1024
+       L0 1024 Z"
+    fill="url(#mountain)"/>
+</svg>

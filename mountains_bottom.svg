@@ -1,0 +1,19 @@
+<svg class="mountains-front" viewBox="0 0 1440 320" preserveAspectRatio="none"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mid-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#24133d"/>
+      <stop offset="100%" stop-color="#0a0a14"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Extended bottom shape, matching the generated image -->
+  <path
+    d="M0,52
+       C180,34 350,15 540,9
+       C730,3 865,17 1010,40
+       C1170,66 1300,80 1440,75
+       L1440,320
+       L0,320 Z"
+    fill="url(#mid-grad)"/>
+</svg>

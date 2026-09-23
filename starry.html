@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starry Canvas Parallax</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 400vh;
+      background: #02030a;
+      color: white;
+      font-family: system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      min-height: 400vh;
+    }
+
+    section {
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+
+    .hero span {
+      opacity: 0.55;
+    }
+
+    .card {
+      max-width: 600px;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 24px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(12px);
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin: 0 0 1rem;
+    }
+
+    p {
+      color: rgba(255,255,255,.65);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <main class="content">
+
+    <section>
+      <div class="hero">
+        STAR<br>
+        <span>FIELD</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>Deep Space</h2>
+        <p>
+          Scroll down and watch different layers of stars move at
+          different speeds, creating a smooth depth-based parallax effect.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>Through the Void</h2>
+        <p>
+          The farther away the stars appear, the slower they move.
+          Nearby stars travel faster to create the illusion of depth.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>∞</h2>
+        <p>Keep scrolling.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+
+    let width;
+    let height;
+    let dpr;
+
+    let scrollY = window.scrollY;
+    let targetScrollY = scrollY;
+
+    const layers = [
+      {
+        count: 180,
+        size: [0.4, 1.0],
+        speed: 0.08,
+        opacity: [0.2, 0.55]
+      },
+      {
+        count: 120,
+        size: [0.7, 1.6],
+        speed: 0.18,
+        opacity: [0.35, 0.8]
+      },
+      {
+        count: 70,
+        size: [1.1, 2.4],
+        speed: 0.35,
+        opacity: [0.5, 1]
+      }
+    ];
+
+    const stars = [];
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      width = window.innerWidth;
+      height = window.innerHeight;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      createStars();
+    }
+
+    function createStars() {
+      stars.length = 0;
+
+      layers.forEach((layer, layerIndex) => {
+        for (let i = 0; i < layer.count; i++) {
+          stars.push({
+            x: Math.random() * width,
+            y: Math.random() * (height * 4),
+            size: random(layer.size[0], layer.size[1]),
+            opacity: random(layer.opacity[0], layer.opacity[1]),
+            speed: layer.speed,
+            layer: layerIndex,
+            twinkle: random(0, Math.PI * 2)
+          });
+        }
+      });
+    }
+
+    function drawBackground() {
+      const gradient = ctx.createRadialGradient(
+        width * 0.5,
+        height * 0.45,
+        0,
+        width * 0.5,
+        height * 0.45,
+        Math.max(width, height)
+      );
+
+      gradient.addColorStop(0, "#101633");
+      gradient.addColorStop(0.45, "#06091a");
+      gradient.addColorStop(1, "#010207");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function drawStars(time) {
+      stars.forEach(star => {
+
+        // Parallax position.
+        // Higher speed = closer star = stronger movement.
+        let y = star.y - scrollY * star.speed;
+
+        // Repeat stars vertically so the field never runs out.
+        const worldHeight = height * 4;
+
+        y = ((y % worldHeight) + worldHeight) % worldHeight;
+
+        // Only draw stars currently visible.
+        if (y < -10 || y > height + 10) return;
+
+        // Subtle twinkle.
+        const twinkle =
+          0.75 +
+          Math.sin(time * 0.0015 + star.twinkle) * 0.25;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          star.x,
+          y,
+          star.size,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle =
+          `rgba(255,255,255,${star.opacity * twinkle})`;
+
+        ctx.fill();
+
+        // Glow for foreground stars.
+        if (star.layer === 2) {
+          ctx.beginPath();
+
+          ctx.arc(
+            star.x,
+            y,
+            star.size * 3,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fillStyle =
+            `rgba(150,180,255,${star.opacity * 0.08})`;
+
+          ctx.fill();
+        }
+      });
+    }
+
+    function animate(time) {
+      // Smooth the scroll movement.
+      scrollY += (targetScrollY - scrollY) * 0.08;
+
+      drawBackground();
+      drawStars(time);
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("scroll", () => {
+      targetScrollY = window.scrollY;
+    }, { passive: true });
+
+    window.addEventListener("resize", resize);
+
+    resize();
+    requestAnimationFrame(animate);
+  </script>
+
+</body>
+</html>

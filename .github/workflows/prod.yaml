@@ -20,7 +20,8 @@ jobs:
     with:
       domain: ${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
-      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      name: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      job: ${{ vars.ALIAKSEI_YAKUBUK_JOB }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
       type: canonical
     secrets:
@@ -35,7 +36,8 @@ jobs:
     with:
       domain: ${{ vars.YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
-      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      name: ${{ vars.YAKUBUK_TITLE }}
+      job: ${{ vars.YAKUBUK_JOB }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
       type: alternate
     secrets:
@@ -50,7 +52,8 @@ jobs:
     with:
       domain: ${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
-      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      name: ${{ vars.ALEXEY_YAKUBUK_TITLE }}
+      job: ${{ vars.ALEXEY_YAKUBUK_JOB }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
       type: alternate
     secrets:
@@ -65,7 +68,8 @@ jobs:
     with:
       domain: ${{ vars.ALEX_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
-      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      name: ${{ vars.ALEX_YAKUBUK_TITLE }}
+      job: ${{ vars.ALEX_YAKUBUK_JOB }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
       type: alternate
     secrets:
@@ -80,7 +84,8 @@ jobs:
     with:
       domain: ${{ vars.LEXA_YAKUBUK_DOMAIN }}
       domains: ${{ vars.DOMAINS }}
-      title: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
+      name: ${{ vars.LEXA_YAKUBUK_TITLE }}
+      job: ${{ vars.LEXA_YAKUBUK_JOB }}
       description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
       type: alternate
     secrets:

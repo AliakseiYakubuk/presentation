@@ -1,1 +1,1 @@
-export { default as Canvas, type PrintOptions } from "./Canvas";
+export { default as LogoCanvas, type PrintOptions } from "./LogoCanvas";
