@@ -1,4 +1,4 @@
-import Star, { StarParams } from "../Stars/Star";
+import Star, { StarParams } from "../Star/Star";
 import Canvas from "./Canvas";
 
 type Dimensions = {
@@ -156,8 +156,8 @@ class BackgroundCanvas extends Canvas {
 
 	public animate() {
 		const handler = (time?: DOMHighResTimeStamp) => {
-			console.log("animate");
 			this.draw(time);
+
 			window.requestAnimationFrame(handler);
 		};
 

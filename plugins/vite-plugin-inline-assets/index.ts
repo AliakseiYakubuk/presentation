@@ -1,5 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { HtmlTagDescriptor, Plugin } from "vite";
+import { HtmlTagDescriptor, Plugin, IndexHtmlTransformHook } from "vite";
+import { schema } from "../../src/schema";
+
+type OutputBundle = NonNullable<
+	Parameters<IndexHtmlTransformHook>[1]["bundle"]
+>;
+type OutputChunk = Extract<OutputBundle[string], { type: "chunk" }>;
+type OutputAsset = Extract<OutputBundle[string], { type: "asset" }>;
 
 const removeScriptTag = (html: string, filename: string) => {
 	const regexp = new RegExp(
@@ -17,14 +24,23 @@ export const inlineAssetsPlugin = (): Plugin => ({
 	name: "inline-assets",
 	apply: "build",
 	enforce: "post",
-	transformIndexHtml: (input, context) => {
+	transformIndexHtml: async (input, context) => {
 		let html = input;
 		const tags: HtmlTagDescriptor[] = [];
 		const bundle = context.bundle || {};
-		const css = Object.values(bundle).find((item) => item.name === "index.css");
-		const js = Object.values(bundle).find((item) => item.name === "index");
+		const values = Object.values(bundle);
 
-		if (css?.type === "asset") {
+		const css = values.find(
+			(item): item is OutputAsset =>
+				item.name === "index.css" && item.type === "asset",
+		);
+
+		const js = values.find(
+			(item): item is OutputChunk =>
+				item.name === "index" && item.type === "chunk",
+		);
+
+		if (css) {
 			html = removeLinkTag(html, css.fileName);
 			tags.push({
 				tag: "style",
@@ -36,7 +52,7 @@ export const inlineAssetsPlugin = (): Plugin => ({
 			delete bundle[css.fileName];
 		}
 
-		if (js?.type === "chunk") {
+		if (js) {
 			html = removeScriptTag(html, js.fileName);
 			tags.push({
 				tag: "script",
@@ -46,6 +62,15 @@ export const inlineAssetsPlugin = (): Plugin => ({
 			});
 
 			delete bundle[js.fileName];
+		}
+
+		if (schema) {
+			tags.push({
+				tag: "script",
+				injectTo: "head",
+				children: schema,
+				attrs: { type: "application/ld+json" },
+			});
 		}
 
 		return { html, tags };

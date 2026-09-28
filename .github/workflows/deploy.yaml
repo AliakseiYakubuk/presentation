@@ -53,7 +53,7 @@ jobs:
         VITE_APP_DOMAINS: ${{ inputs.domains }}
         VITE_NAME: ${{ inputs.name }}
         VITE_JOB: ${{ inputs.job }}
-        VITE_APP_DESCRIPTION: ${{ inputs.description }}
+        VITE_DESCRIPTION: ${{ inputs.description }}
         VITE_PAGE_TYPE: ${{ inputs.type }}
         VITE_GA_TAG: ${{ secrets.gaTag }}
 

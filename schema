@@ -1,0 +1,160 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://example.com/cv#profilepage",
+  "url": "https://example.com/cv",
+  "name": "John Doe — CV",
+  "description": "CV and professional profile of John Doe, a software engineer specializing in web development and distributed systems.",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://example.com/cv#person",
+    "name": "John Doe",
+    "url": "https://example.com/cv",
+    "image": "https://example.com/images/john-doe.jpg",
+    "jobTitle": "Senior Software Engineer",
+    "description": "Software engineer specializing in web development, distributed systems, and cloud infrastructure.",
+    "email": "mailto:john@example.com",
+
+    "sameAs": [
+      "https://www.linkedin.com/in/johndoe/",
+      "https://github.com/johndoe"
+    ],
+
+    "knowsAbout": [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Cloud Computing",
+      "Distributed Systems"
+    ],
+
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Example Company",
+      "url": "https://example.com"
+    },
+
+    "alumniOf": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Example University",
+        "url": "https://university.example.com"
+      }
+    ]
+  }
+}
+</script>
+
+
+
+| Schema property | Use it?       | Purpose                                             |
+| --------------- | ------------- | --------------------------------------------------- |
+| `ProfilePage`   | **Yes**       | Tells search engines the page is a person's profile |
+| `Person`        | **Yes**       | Main representation of you                          |
+| `name`          | **Yes**       | Your full name                                      |
+| `url`           | **Yes**       | Canonical URL of your profile                       |
+| `image`         | Usually       | Professional headshot                               |
+| `jobTitle`      | **Yes**       | Current/professional title                          |
+| `description`   | **Yes**       | Short professional summary                          |
+| `sameAs`        | **Yes**       | LinkedIn, GitHub, personal profiles                 |
+| `worksFor`      | If applicable | Current employer                                    |
+| `alumniOf`      | If applicable | University/school                                   |
+| `knowsAbout`    | **Yes**       | Skills/expertise/topics                             |
+| `email`         | Optional      | Only if you actually want it exposed                |
+| `address`       | Usually no    | Avoid exposing your home address                    |
+| `telephone`     | Usually no    | Avoid exposing personal phone unless intentional    |
+
+{
+  "@type": "Person",
+  "@id": "https://example.com/cv#person",
+  "name": "John Doe",
+  "jobTitle": "Senior Software Engineer",
+
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Acme Inc."
+  },
+
+  "hasOccupation": {
+    "@type": "Occupation",
+    "name": "Software Engineer",
+    "occupationLocation": {
+      "@type": "Country",
+      "name": "Poland"
+    }
+  },
+
+  "knowsAbout": [
+    "Software Engineering",
+    "Web Development",
+    "TypeScript",
+    "React",
+    "Node.js"
+  ],
+
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "MSc in Computer Science"
+    }
+  ],
+
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Example University"
+  },
+
+  "sameAs": [
+    "https://www.linkedin.com/in/johndoe/",
+    "https://github.com/johndoe"
+  ]
+}
+
+
+// speakable 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://example.com/cv#profilepage",
+  "url": "https://example.com/cv",
+  "name": "John Doe — CV",
+  "description": "CV and professional profile of John Doe, a Senior Software Engineer specializing in web development and distributed systems.",
+
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".cv-name",
+      ".cv-summary"
+    ]
+  },
+
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://example.com/cv#person",
+    "name": "John Doe",
+    "url": "https://example.com/cv",
+    "image": "https://example.com/images/john-doe.jpg",
+    "jobTitle": "Senior Software Engineer",
+
+    "description": "Software engineer specializing in web development, distributed systems, and cloud infrastructure.",
+
+    "sameAs": [
+      "https://www.linkedin.com/in/johndoe/",
+      "https://github.com/johndoe"
+    ],
+
+    "knowsAbout": [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Cloud Computing",
+      "Distributed Systems"
+    ]
+  }
+}
+</script>
