@@ -51,8 +51,9 @@ jobs:
       env:
         VITE_APP_MAIN_DOMAIN: ${{ inputs.domain }}
         VITE_APP_DOMAINS: ${{ inputs.domains }}
-        VITE_APP_TITLE: ${{ inputs.title }}
-        VITE_APP_DESCRIPTION: ${{ inputs.description }}
+        VITE_NAME: ${{ inputs.name }}
+        VITE_JOB: ${{ inputs.job }}
+        VITE_DESCRIPTION: ${{ inputs.description }}
         VITE_PAGE_TYPE: ${{ inputs.type }}
         VITE_GA_TAG: ${{ secrets.gaTag }}
 
