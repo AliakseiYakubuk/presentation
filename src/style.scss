@@ -109,7 +109,8 @@ body {
   }
 
   .header {
-    font-size: 0.01em;
+    height: 0;
+    overflow: hidden;
     color: $black;
   }
 
