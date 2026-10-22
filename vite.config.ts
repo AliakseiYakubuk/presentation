@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { inlineAssetsPlugin } from "./plugins/vite-plugin-inline-assets";
+import { robotsPlugin } from "./plugins/vite-plugin-robots";
+import { sitemapPlugin } from "./plugins/vite-plugin-sitemap";
 
 export default defineConfig({
 	server: {
@@ -29,6 +31,13 @@ export default defineConfig({
 	plugins: [
 		createHtmlPlugin({ minify: true }),
 		inlineAssetsPlugin(),
+		robotsPlugin({
+			host: process.env.DOMAIN as string,
+			sitemap: `https://${process.env.DOMAIN}/sitemap.xml`,
+		}),
+		sitemapPlugin({
+			host: process.env.DOMAIN as string,
+		}),
 		viteStaticCopy({
 			targets: [{ src: "assets/og-image.jpg", dest: "assets" }],
 			silent: true,

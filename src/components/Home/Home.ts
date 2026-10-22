@@ -266,7 +266,7 @@ class Home extends View {
 			);
 
 			await this.logoCanvas.printLine(
-				import.meta.env.VITE_JOB,
+				import.meta.env.VITE_POSITION,
 				devotionOptions.position,
 				devotionOptions.printOptions,
 			);

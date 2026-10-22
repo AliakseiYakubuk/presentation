@@ -1,4 +1,4 @@
-const url = `https://${process.env.VITE_APP_MAIN_DOMAIN}/`;
+const url = `https://${process.env.VITE_DOMAIN}/`;
 
 const parseJSON = (input: unknown) => {
 	try {
@@ -20,7 +20,7 @@ export const schema = JSON.stringify({
 		"@id": url,
 		name: process.env.VITE_NAME,
 		url: url,
-		jobTitle: process.env.VITE_JOB,
+		jobTitle: process.env.VITE_POSITION,
 		description: process.env.VITE_DESCRIPTION,
 		email: `mailto:${process.env.VITE_EMAIL}`,
 		sameAs: parseJSON(process.env.VITE_PROFILE_LINKS),

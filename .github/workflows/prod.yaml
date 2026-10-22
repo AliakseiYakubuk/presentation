@@ -14,80 +14,18 @@ on:
 
 jobs:
 
-  aliaksei-yakubuk:
+  yakubuk:
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: ${{ vars.ALIAKSEI_YAKUBUK_DOMAIN }}
-      domains: ${{ vars.DOMAINS }}
-      name: ${{ vars.ALIAKSEI_YAKUBUK_TITLE }}
-      job: ${{ vars.ALIAKSEI_YAKUBUK_JOB }}
-      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
-      type: canonical
-    secrets:
-      awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
-      awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
-      awsRegion: ${{ secrets.AWS_CV_REGION }}
-      gaTag: ${{ secrets.GA_TAG }}
-
-  yakubuk:
-    needs: aliaksei-yakubuk
-    uses: ./.github/workflows/deploy.yaml
-    with:
-      domain: ${{ vars.YAKUBUK_DOMAIN }}
-      domains: ${{ vars.DOMAINS }}
-      name: ${{ vars.YAKUBUK_TITLE }}
-      job: ${{ vars.YAKUBUK_JOB }}
-      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
-      type: alternate
-    secrets:
-      awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
-      awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
-      awsRegion: ${{ secrets.AWS_CV_REGION }}
-      gaTag: ${{ secrets.GA_TAG }}
-
-  alexey-yakubuk:
-    needs: yakubuk
-    uses: ./.github/workflows/deploy.yaml
-    with:
-      domain: ${{ vars.ALEXEY_YAKUBUK_DOMAIN }}
-      domains: ${{ vars.DOMAINS }}
-      name: ${{ vars.ALEXEY_YAKUBUK_TITLE }}
-      job: ${{ vars.ALEXEY_YAKUBUK_JOB }}
-      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
-      type: alternate
-    secrets:
-      awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
-      awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
-      awsRegion: ${{ secrets.AWS_CV_REGION }}
-      gaTag: ${{ secrets.GA_TAG }}
-
-  alex-yakubuk:
-    needs: alexey-yakubuk
-    uses: ./.github/workflows/deploy.yaml
-    with:
-      domain: ${{ vars.ALEX_YAKUBUK_DOMAIN }}
-      domains: ${{ vars.DOMAINS }}
-      name: ${{ vars.ALEX_YAKUBUK_TITLE }}
-      job: ${{ vars.ALEX_YAKUBUK_JOB }}
-      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
-      type: alternate
-    secrets:
-      awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
-      awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
-      awsRegion: ${{ secrets.AWS_CV_REGION }}
-      gaTag: ${{ secrets.GA_TAG }}
-
-  lexa-yakubuk:
-    needs: alex-yakubuk
-    uses: ./.github/workflows/deploy.yaml
-    with:
-      domain: ${{ vars.LEXA_YAKUBUK_DOMAIN }}
-      domains: ${{ vars.DOMAINS }}
-      name: ${{ vars.LEXA_YAKUBUK_TITLE }}
-      job: ${{ vars.LEXA_YAKUBUK_JOB }}
-      description: ${{ vars.ALIAKSEI_YAKUBUK_DESCRIPTION }}
-      type: alternate
+      domain: dev.${{ vars.DOMAIN }}
+      title: ${{ vars.TITLE }}
+      name: ${{ vars.NAME }}
+      position: ${{ vars.POSITION }}
+      description: ${{ vars.DESCRIPTION }}
+      email: ${{ vars.EMAIL }}
+      profileLinks: ${{ vars.PROFILE_LINKS }}
+      skills: ${{ vars.SKILLS }}
     secrets:
       awsAccessKeyId: ${{ secrets.AWS_CV_ACCESS_KEY }}
       awsSecretAccessKey: ${{ secrets.AWS_CV_SECRET_KEY }}
@@ -95,7 +33,7 @@ jobs:
       gaTag: ${{ secrets.GA_TAG }}
 
   release:
-    needs: [aliaksei-yakubuk, yakubuk, alexey-yakubuk, alex-yakubuk, lexa-yakubuk]
+    needs: yakubuk
     runs-on: ubuntu-latest
     steps:
     - name: checkout

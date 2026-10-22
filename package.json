@@ -5,13 +5,12 @@
 	"type": "module",
 	"scripts": {
 		"start": "vite --host",
-		"build": "yarn sitemap \"$VITE_APP_DOMAINS\" && yarn ts && vite build --emptyOutDir",
+		"build": "yarn ts && vite build --emptyOutDir",
 		"lint": "yarn ts && yarn biome",
 		"ts": "tsc",
 		"biome": "biome check --write",
 		"preview": "vite preview",
-		"invalidate": "sh ./scripts/invalidate-cache.sh",
-		"sitemap": "sh ./scripts/generate-sitemap.sh"
+		"invalidate": "sh ./scripts/invalidate-cache.sh"
 	},
 	"engines": {
 		"yarn": ">=1.22.4",
