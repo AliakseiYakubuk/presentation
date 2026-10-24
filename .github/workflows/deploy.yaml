@@ -12,6 +12,18 @@ on:
       description:
         required: true
         type: string
+      position:
+        required: true
+        type: string
+      email:
+        required: true
+        type: string
+      profileLinks:
+        required: true
+        type: string
+      skills:
+        required: true
+        type: string
     secrets:
       awsAccessKeyId:
         required: true
