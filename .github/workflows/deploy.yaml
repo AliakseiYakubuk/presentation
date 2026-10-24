@@ -9,6 +9,9 @@ on:
       title:
         required: true
         type: string
+      name:
+        required: true
+        type: string
       description:
         required: true
         type: string
