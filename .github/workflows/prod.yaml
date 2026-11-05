@@ -61,4 +61,4 @@ jobs:
         aws-region: ${{ secrets.AWS_CV_REGION }}
 
     - name: invalidation
-      run: yarn invalidate
+      run: sh ./scripts/invalidate-cache.sh

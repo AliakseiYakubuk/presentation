@@ -9,8 +9,7 @@
 		"lint": "yarn ts && yarn biome",
 		"ts": "tsc",
 		"biome": "biome check --write",
-		"preview": "vite preview",
-		"invalidate": "sh ./scripts/invalidate-cache.sh"
+		"preview": "vite preview"
 	},
 	"engines": {
 		"yarn": ">=1.22.4",
