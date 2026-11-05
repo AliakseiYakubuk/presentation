@@ -1,4 +1,6 @@
-import { Canvas, PrintOptions } from "../Canvas";
+import { PrintOptions } from "../Canvas";
+import { LogoCanvas } from "../Canvas";
+import BackgroundCanvas from "../Canvas/BackgroundCanvas";
 import { Point } from "../Point";
 import { View } from "../View";
 import {
@@ -7,7 +9,6 @@ import {
 	CONTAINER_ID,
 	COPY_EMAIL_BUTTON_ACTIVE_CLASS,
 	COPY_EMAIL_BUTTON_ID,
-	HEIGHT_VARIABLE,
 	HOME_VIEW,
 	OPEN_EMAIL_BUTTON_ID,
 } from "./Home.const";
@@ -28,26 +29,38 @@ type LabelOptions = {
 
 class Home extends View {
 	static async init() {
-		const canvas = await Canvas.init("logo");
-		return new Home(canvas);
+		return new Promise<Home>((resolve) => {
+			window.addEventListener("load", () => {
+				const logo = document.getElementById(
+					"logo",
+				) as HTMLCanvasElement | null;
+				const background = document.getElementById(
+					"stars",
+				) as HTMLCanvasElement | null;
+
+				return resolve(
+					new Home(new LogoCanvas(logo), new BackgroundCanvas(background)),
+				);
+			});
+		});
 	}
 
-	private canvas: Canvas;
+	private logoCanvas: LogoCanvas;
+
+	private backgroundCanvas: BackgroundCanvas;
 
 	private debounce<T extends () => void>(fn: T, ms: number) {
-		let isDebounced: boolean = false;
+		let timerId: NodeJS.Timeout | null = null;
 
 		return () => {
-			if (isDebounced) {
-				return;
+			if (timerId) {
+				clearTimeout(timerId);
 			}
 
-			setTimeout(() => {
+			timerId = setTimeout(() => {
 				fn();
-				isDebounced = false;
+				timerId = null;
 			}, ms);
-
-			isDebounced = true;
 		};
 	}
 
@@ -175,12 +188,25 @@ class Home extends View {
 	}
 
 	private async copyToClipboard(value: string) {
-		if (this.hasClipboardAPI()) {
-			try {
-				await navigator.clipboard.writeText(value);
-				this.copySuccessMessage();
-				// biome-ignore lint/suspicious/noEmptyBlockStatements: just to cacth an error
-			} catch (_) {}
+		const status = (document.getElementById("copy_status") ||
+			{}) as HTMLDivElement;
+
+		status.textContent = "";
+
+		if (!this.hasClipboardAPI()) {
+			status.textContent = "Copying is not supported in this browser.";
+			return;
+		}
+
+		try {
+			await navigator.clipboard.writeText(value);
+			await this.copySuccessMessage();
+
+			status.textContent = "Email address copied to clipboard.";
+		} catch {
+			status.textContent =
+				"Could not copy the email address. Please try again.";
+			return;
 		}
 	}
 
@@ -236,32 +262,42 @@ class Home extends View {
 
 	private async drawLogo() {
 		try {
-			await this.canvas.clear();
+			await this.logoCanvas.clear();
 
 			const fontFamily = this.getCurrentFontFamily();
 			const nameOptions = this.getNameOptions({ fontFamily });
 			const devotionOptions = this.getDevotionOptions({ fontFamily });
 			const canvasOptions = this.getCanvasOptions();
 
-			this.canvas.setWidth(canvasOptions.width);
-			this.canvas.setHeight(canvasOptions.height);
+			this.logoCanvas.setWidth(canvasOptions.width);
+			this.logoCanvas.setHeight(canvasOptions.height);
 
-			await this.canvas.printLine(
-				"Aliaksei Yakubuk",
+			await this.logoCanvas.printLine(
+				import.meta.env.VITE_NAME,
 				nameOptions.position,
 				nameOptions.printOptions,
 			);
 
-			await this.canvas.printLine(
-				"Software Engineer",
+			await this.logoCanvas.printLine(
+				import.meta.env.VITE_POSITION,
 				devotionOptions.position,
 				devotionOptions.printOptions,
 			);
 		} catch (error) {
-			if (error) {
+			if (error instanceof Error) {
 				// biome-ignore lint/suspicious/noConsole: report error
 				console.error(error);
 			}
+		}
+	}
+
+	private async drawBackground() {
+		try {
+			await this.backgroundCanvas.clear();
+			this.backgroundCanvas.draw();
+		} catch (error) {
+			// biome-ignore lint/suspicious/noConsole: report error
+			console.error(error);
 		}
 	}
 
@@ -270,31 +306,10 @@ class Home extends View {
 		await this.showContacts();
 	}
 
-	private getNextHeightVariable() {
-		return `${window.innerHeight * 0.01}px`;
-	}
-
-	private getHeightVariable() {
-		return document.documentElement?.style?.getPropertyValue(HEIGHT_VARIABLE);
-	}
-
-	private setHeightVariable(value: string) {
-		document.documentElement?.style?.setProperty(HEIGHT_VARIABLE, value);
-	}
-
-	private isHeightVariableUpdated() {
-		return this.getHeightVariable() !== this.getNextHeightVariable();
-	}
-
-	constructor(canvas: Canvas) {
+	constructor(logoCanvas: LogoCanvas, backgoundCanvas: BackgroundCanvas) {
 		super();
-		this.canvas = canvas;
-	}
-
-	public defineHeightVariable() {
-		if (!this.getHeightVariable()) {
-			this.setHeightVariable(this.getNextHeightVariable());
-		}
+		this.logoCanvas = logoCanvas;
+		this.backgroundCanvas = backgoundCanvas;
 	}
 
 	public async listenClickCopyEmail(email: string) {
@@ -317,12 +332,8 @@ class Home extends View {
 
 		if (Observer) {
 			const observer = new Observer(
-				this.debounce(() => {
-					if (this.isHeightVariableUpdated()) {
-						this.setHeightVariable(this.getNextHeightVariable());
-					} else {
-						this.startPresentation();
-					}
+				this.debounce(async () => {
+					await Promise.all([this.drawBackground(), this.startPresentation()]);
 				}, 250),
 			);
 
@@ -330,6 +341,14 @@ class Home extends View {
 		} else {
 			this.startPresentation();
 		}
+	}
+
+	public listenScroll() {
+		this.backgroundCanvas.listenScroll();
+	}
+
+	public animateBackground() {
+		this.backgroundCanvas.animate();
 	}
 }
 

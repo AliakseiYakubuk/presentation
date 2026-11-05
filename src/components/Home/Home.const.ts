@@ -1,5 +1,3 @@
-export const HEIGHT_VARIABLE = "--heightUnit";
-
 export const CONTAINER_ID = "container";
 
 export const HOME_VIEW = "home_view";

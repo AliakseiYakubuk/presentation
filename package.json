@@ -5,13 +5,12 @@
 	"type": "module",
 	"scripts": {
 		"start": "vite --host",
-		"build": "yarn sitemap \"$VITE_APP_DOMAINS\" && yarn ts && vite build --emptyOutDir",
+		"build": "yarn ts && vite build --emptyOutDir",
 		"lint": "yarn ts && yarn biome",
 		"ts": "tsc",
 		"biome": "biome check --write",
 		"preview": "vite preview",
-		"invalidate": "sh ./scripts/invalidate-cache.sh",
-		"sitemap": "sh ./scripts/generate-sitemap.sh"
+		"invalidate": "sh ./scripts/invalidate-cache.sh"
 	},
 	"engines": {
 		"yarn": ">=1.22.4",
@@ -21,12 +20,18 @@
 		"@biomejs/biome": "2.4.16",
 		"@types/node": "25.9.1",
 		"husky": "9.1.7",
-		"postcss": "8.5.15",
+		"postcss": "8.5.23",
 		"sass": "1.100.0",
-		"tsc": "2.0.4",
 		"typescript": "6.0.3",
-		"vite": "6.4.2",
+		"vite": "6.4.5",
 		"vite-plugin-html": "3.2.2",
 		"vite-plugin-static-copy": "4.1.0"
+	},
+	"resolutions": {
+		"brace-expansion": "2.1.7",
+		"source-map-js": "1.2.2",
+		"immutable": "5.1.8",
+		"postcss": "8.5.23",
+		"nanoid": "3.3.18"
 	}
 }

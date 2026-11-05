@@ -6,16 +6,25 @@ on:
       domain:
         required: true
         type: string
-      domains:
+      title:
         required: true
         type: string
-      title:
+      name:
         required: true
         type: string
       description:
         required: true
         type: string
-      type:
+      position:
+        required: true
+        type: string
+      email:
+        required: true
+        type: string
+      profileLinks:
+        required: true
+        type: string
+      skills:
         required: true
         type: string
     secrets:
@@ -38,7 +47,7 @@ jobs:
     - name: node-setup
       uses: actions/setup-node@v4
       with:
-        node-version: '24'
+        node-version: '24.22.1'
 
     - name: install
       run: yarn
@@ -49,11 +58,14 @@ jobs:
     - name: build
       run: yarn build
       env:
-        VITE_APP_MAIN_DOMAIN: ${{ inputs.domain }}
-        VITE_APP_DOMAINS: ${{ inputs.domains }}
-        VITE_APP_TITLE: ${{ inputs.title }}
-        VITE_APP_DESCRIPTION: ${{ inputs.description }}
-        VITE_PAGE_TYPE: ${{ inputs.type }}
+        VITE_DOMAIN: ${{ inputs.domain }}
+        VITE_TITLE: ${{ inputs.title }}
+        VITE_NAME: ${{ inputs.name }}
+        VITE_POSITION: ${{ inputs.position }}
+        VITE_DESCRIPTION: ${{ inputs.description }}
+        VITE_EMAIL: ${{ inputs.email }}
+        VITE_PROFILE_LINKS: ${{ inputs.profileLinks }}
+        VITE_SKILLS: ${{ inputs.skills }}
         VITE_GA_TAG: ${{ secrets.gaTag }}
 
     - name: aws-cli-setup
