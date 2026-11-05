@@ -6,8 +6,6 @@
     <meta name="theme-color" content="#000" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="%VITE_DESCRIPTION%">
-    <meta name="keywords"
-      content="Yakubuk, Aliaksei Yakubuk, Alexey Yakubuk, Alex Yakubuk, Aleksei Yakubuk, Alexey, Aliaksei. Software Engineer. Web development" />
 
     <title>%VITE_TITLE%</title>
 
@@ -30,7 +28,6 @@
     <meta name="twitter:description" content="%VITE_DESCRIPTION%">
     <meta name="twitter:image" content="https://%VITE_DOMAIN%/assets/og-image.jpg">
 
-    <!-- <script type="module" src="schema.ts"></script> -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TAG%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -43,12 +40,12 @@
 
   <body>
     <main id="container" class="container">
-      <canvas id="stars" class="stars"></canvas>
+      <canvas id="stars" class="stars" aria-hidden="true"></canvas>
       <div id="home_view" class="view home">
         <canvas id="logo" role="img" class="logo" aria-label="%VITE_NAME% - %VITE_POSITION%"></canvas>
-        <h1 class="header">%VITE_NAME% - %VITE_POSITION%</h1>
+        <h1 class="header speakable">%VITE_NAME% - %VITE_POSITION%</h1>
 
-        <section id="contacts" class="contacts">
+        <section id="contacts" class="contacts" aria-label="Contact links">
           <a id="open_email" href="mailto:aliaksei.yakubuk@gmail.com" class="contact open_email">
             <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" fill="none"
               viewBox="0 0 24 24">
@@ -58,7 +55,7 @@
             </svg>
             Email
           </a>
-          <button id="copy_email" class="contact copy_email">
+          <button id="copy_email" class="contact copy_email" type="button" aria-label="Copy email address">
             <div class="copy_email_label copy_email_label_default">
               <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" fill="none"
                 viewBox="0 0 24 24">
@@ -87,7 +84,8 @@
               Copied
             </div>
           </button>
-
+          <div id="copy_status" class="sr-only" role="status"></div>
+          
           <a href="https://www.linkedin.com/in/aliakseiyakubuk/" class="contact linkedin" target="_blank"
             rel="noopener">
             <svg class="contact_icon" xmlns="http://www.w3.org/2000/svg" width="48px" height="48px"
@@ -112,11 +110,39 @@
       </div>
 
       <div class="view experience">
-        <div class="card speakable">
-          %VITE_DESCRIPTION%
+
+        <div class="summary">
+          <div class="card">
+            <ul>
+              <li>Building and maintaining<br /> web applications</li>
+              <li>Problem solving</li>
+              <li>Tackling challenges</li>
+              <li>Agentic engineering</li>
+              <li>Continuous learning</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <p class="speakable">
+              <strong>Senior Software Engineer</strong><br />
+              <br />7 years of experience <br />in web development,
+              <br />specializing in <br /><strong>JavaScript and TypeScript</strong><br />
+              across both frontend and backend applications<br />
+            </p>
+          </div>
+
+          <div class="card">
+            <p>
+              Team player who values <br />open communication,
+              <br />knowledge sharing, <br />learning from others. <br /><br />Adaptable,
+              proactive, and always eager to turn new ideas into effective
+              technical solutions.
+            </p>
+          </div>
         </div>
 
-        <svg class="mountains-back" preserveAspectRatio="none" viewBox="288 0 1152 320">
+        <svg class="mountains-back" preserveAspectRatio="none" viewBox="288 0 1152 320" aria-hidden="true"
+          focusable="false">
           <defs>
             <linearGradient id="a" x1="0%" x2="0%" y1="0%" y2="100%">
               <stop offset="0%" stop-color="#140f28" />
@@ -128,19 +154,19 @@
         </svg>
 
         <svg class="mountains-front" viewBox="0 0 1440 240" preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg">
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="mid-grad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stop-color="#24133d" />
               <stop offset="100%" stop-color="#0a0a14" />
             </linearGradient>
           </defs>
-          <path d="M0,104 C180,68 350,30 540,18 C730,6 865,34 1010,80 C1170,132 1300,160 1440,150 L1440,240 L0,240 Z" fill="url(#mid-grad)" />
+          <path d="M0,104 C180,68 350,30 540,18 C730,6 865,34 1010,80 C1170,132 1300,160 1440,150 L1440,240 L0,240 Z"
+            fill="url(#mid-grad)" />
         </svg>
       </div>
     </main>
     <script type="module" src="main.ts"></script>
-    <script type="module" src="schema.ts"></script>
   </body>
 
 </html>

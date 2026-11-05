@@ -9,7 +9,22 @@ on:
       title:
         required: true
         type: string
+      name:
+        required: true
+        type: string
       description:
+        required: true
+        type: string
+      position:
+        required: true
+        type: string
+      email:
+        required: true
+        type: string
+      profileLinks:
+        required: true
+        type: string
+      skills:
         required: true
         type: string
     secrets:
@@ -32,7 +47,7 @@ jobs:
     - name: node-setup
       uses: actions/setup-node@v4
       with:
-        node-version: '24'
+        node-version: '24.22.1'
 
     - name: install
       run: yarn

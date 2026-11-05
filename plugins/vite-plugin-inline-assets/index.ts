@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import { HtmlTagDescriptor, Plugin, IndexHtmlTransformHook } from "vite";
 import { schema } from "../../src/schema";
 

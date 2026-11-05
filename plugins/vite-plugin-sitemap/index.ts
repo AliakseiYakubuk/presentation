@@ -15,8 +15,7 @@ export function sitemapPlugin(options: RobotsPluginOptions): Plugin {
 			config = resolvedConfig;
 		},
 		async writeBundle() {
-			const robotsTxtContent = `
-<?xml version="1.0" encoding="UTF-8"?>
+			const robotsTxtContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://${options.host}/</loc>

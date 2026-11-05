@@ -188,12 +188,25 @@ class Home extends View {
 	}
 
 	private async copyToClipboard(value: string) {
-		if (this.hasClipboardAPI()) {
-			try {
-				await navigator.clipboard.writeText(value);
-				this.copySuccessMessage();
-				// biome-ignore lint/suspicious/noEmptyBlockStatements: just to cacth an error
-			} catch (_) {}
+		const status = (document.getElementById("copy_status") ||
+			{}) as HTMLDivElement;
+
+		status.textContent = "";
+
+		if (!this.hasClipboardAPI()) {
+			status.textContent = "Copying is not supported in this browser.";
+			return;
+		}
+
+		try {
+			await navigator.clipboard.writeText(value);
+			await this.copySuccessMessage();
+
+			status.textContent = "Email address copied to clipboard.";
+		} catch {
+			status.textContent =
+				"Could not copy the email address. Please try again.";
+			return;
 		}
 	}
 

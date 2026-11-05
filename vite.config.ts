@@ -32,11 +32,11 @@ export default defineConfig({
 		createHtmlPlugin({ minify: true }),
 		inlineAssetsPlugin(),
 		robotsPlugin({
-			host: process.env.DOMAIN as string,
-			sitemap: `https://${process.env.DOMAIN}/sitemap.xml`,
+			host: process.env.VITE_DOMAIN as string,
+			sitemap: `https://${process.env.VITE_DOMAIN}/sitemap.xml`,
 		}),
 		sitemapPlugin({
-			host: process.env.DOMAIN as string,
+			host: process.env.VITE_DOMAIN as string,
 		}),
 		viteStaticCopy({
 			targets: [{ src: "assets/og-image.jpg", dest: "assets" }],
