@@ -18,7 +18,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/deploy.yaml
     with:
-      domain: dev.${{ vars.DOMAIN }}
+      domain: ${{ vars.DOMAIN }}
       title: ${{ vars.TITLE }}
       name: ${{ vars.NAME }}
       position: ${{ vars.POSITION }}
